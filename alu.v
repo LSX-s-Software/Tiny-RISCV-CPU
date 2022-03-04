@@ -2,43 +2,41 @@
 
 `include "defines.v"
 
-module alu(
+module ALU(
     input [`WORD_LEN-1:0]   a,
     input [`WORD_LEN-1:0]   b,
-    input [3:0]             ALUOp,
+    input [3:0]             ALUCtrl,
 
     output reg [`WORD_LEN-1:0] ALUOut,
     output zeroFlag,
     output ltFlag,
-    output geFlag,
+    output geFlag
 );
     always @(*)
-    case(ALUOp[3:0])
-        `ALU_CTRL_MOVEA: 	aluout <= a;
-        `ALU_CTRL_ADD: 		aluout <= $signed(a) + $signed(b);
-        `ALU_CTRL_ADDU:		aluout <= a + b;
+    case(ALUCtrl)
+        `ALU_CTRL_MOVEA: 	ALUOut <= a;
+        `ALU_CTRL_ADD:		ALUOut <= a + b;
 
-        `ALU_CTRL_OR: 		aluout <= a | b;
-        `ALU_CTRL_XOR: 		aluout <= a ^ b;
-        `ALU_CTRL_AND:      aluout <= a & b;
+        `ALU_CTRL_OR: 		ALUOut <= a | b;
+        `ALU_CTRL_XOR: 		ALUOut <= a ^ b;
+        `ALU_CTRL_AND:      ALUOut <= a & b;
 
-        `ALU_CTRL_SLL:      aluout <= a << b;
-        `ALU_CTRL_SRL:      aluout <= a >> b;
-        `ALU_CTRL_SRA:      aluout <= $signed(a) >>> b;
+        `ALU_CTRL_SLL:      ALUOut <= a << b;
+        `ALU_CTRL_SRL:      ALUOut <= a >> b;
+        `ALU_CTRL_SRA:      ALUOut <= $signed(a) >>> b;
 
-        `ALU_CTRL_SUB:      aluout <= $signed(a) - $signed(b);
-        `ALU_CTRL_SUBU:     aluout <= a - b;
-        `ALU_CTRL_SLT:      aluout <= $signed(a) < $signed(b) ? 1 : 0;
-        `ALU_CTRL_SLTU:     aluout <= a < b ? 1 : 0;
+        `ALU_CTRL_SUB:      ALUOut <= a - b;
+        `ALU_CTRL_SLT:      ALUOut <= $signed(a) < $signed(b) ? 1 : 0;
+        `ALU_CTRL_SLTU:     ALUOut <= a < b ? 1 : 0;
 
-        `ALU_CTRL_LUI:		aluout <= b; //a = 0, b = immout
-        `ALU_CTRL_AUIPC:	aluout <= a + $signed(b); //a = pc, b = immout
+        `ALU_CTRL_LUI:		ALUOut <= b; //a = 0, b = immout
+        `ALU_CTRL_AUIPC:	ALUOut <= a + $signed(b); //a = pc, b = immout
 
         //`ALU_CTRL_ZERO
-        default: 			aluout <= `WORD_LEN'b0;
+        default: 			ALUOut <= `WORD_LEN'b0;
     endcase
 
-    assign zeroFlag = (aluout == `WORD_LEN'b0);
-    assign ltFlag = aluout[`WORD_LEN-1];
-    assign geFlag = ~aluout[`WORD_LEN-1];
+    assign zeroFlag = (ALUOut == `WORD_LEN'b0);
+    assign ltFlag = ALUOut[`WORD_LEN-1];
+    assign geFlag = ~ALUOut[`WORD_LEN-1];
 endmodule

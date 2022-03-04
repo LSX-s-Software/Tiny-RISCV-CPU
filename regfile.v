@@ -5,7 +5,7 @@
 
 `include "defines.v"
 
-module regfile(
+module RegFile(
     input                      	clk,
     input  [`REG_IDX_WIDTH-1:0] readAddr1, readAddr2,
     output [`WORD_LEN-1:0]      readData1, readData2,
@@ -15,7 +15,7 @@ module regfile(
     input  [`WORD_LEN-1:0]      writeData
 );
 
-    reg [`WORD_LEN-1:0] registerFile[`RFREG_NUM-1:0];
+    reg [`WORD_LEN-1:0] registerFile[`REG_COUNT-1:0];
 
     always @(negedge clk)
         if (writeEnable && writeAddr != 0)

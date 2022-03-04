@@ -9,12 +9,15 @@
 //
 // ====================================================================
 
-module riscv_tb();
+`include "defines.v"
+
+module xgriscv_tb();
     
    reg  clk, rstn;
+   wire [`ADDR_SIZE-1:0] pcW;
     
    // instantiation of xgriscv 
-   riscv_pipeline riscvp(clk, rstn);
+   riscv_pipeline riscvp(clk, rstn, pcW);
 
    integer counter = 0;
    

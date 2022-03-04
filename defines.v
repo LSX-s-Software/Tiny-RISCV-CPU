@@ -24,8 +24,8 @@
 `define OP_BRANCH	7'b1100011
 `define OP_LOAD		7'b0000011
 `define OP_STORE	7'b0100011
-`define OP_ADDI		7'b0010011
-`define OP_ADD		7'b0110011
+`define OP_I_TYPE	7'b0010011
+`define OP_R_TYPE	7'b0110011
 
 `define FUNCT3_BEQ	3'b000
 `define FUNCT3_BNE	3'b001
@@ -63,7 +63,6 @@
 `define FUNCT3_SLT	3'b010
 `define FUNCT3_SLTU	3'b011
 `define FUNCT3_XOR	3'b100
-`define FUNCT3_SR	3'b101
 `define FUNCT3_OR	3'b110
 `define FUNCT3_AND	3'b111
 
@@ -89,7 +88,7 @@
 `define	ALU_CTRL_MOVEA	4'b0000
 
 `define	ALU_CTRL_ADD	4'b0001
-`define	ALU_CTRL_ADDU	4'b0010
+`define	ALU_CTRL_SUB	4'b1001
 
 `define	ALU_CTRL_OR		4'b0011
 `define	ALU_CTRL_XOR	4'b0100
@@ -99,8 +98,6 @@
 `define	ALU_CTRL_SRL	4'b0111
 `define	ALU_CTRL_SRA	4'b1000
 
-`define	ALU_CTRL_SUB	4'b1001
-`define	ALU_CTRL_SUBU	4'b1010
 `define	ALU_CTRL_SLT	4'b1011
 `define	ALU_CTRL_SLTU	4'b1100
 
