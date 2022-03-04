@@ -5,13 +5,13 @@
 module CPU (
     input clk, rst,
 
-    output pc
+    output [`ADDR_SIZE-1:0] pc
 );
     // PC
     wire [`ADDR_SIZE-1:0] newPC, newSeqAddr, newJumpAddr;
     wire [`WORD_LEN-1:0] immSL1;
     wire branchCtrl;
-    PC programCounter(clk, rst, 1, newPC, pc);
+    PC programCounter(clk, rst, 1'b1, newPC, pc);
     addr_adder1 adder1(pc, newSeqAddr);
     addr_adder2 adder2(pc, immSL1 ,newJumpAddr);
     PCSrcMux pcSrcMux(newSeqAddr, newJumpAddr, branchCtrl, newPC);
@@ -32,7 +32,7 @@ module CPU (
 
     // Immdiate
     wire [`WORD_LEN-1:0] immOut;
-    ImmGen immGen(pc, immCtrl, immOut);
+    ImmGen immGen(instr, immCtrl, immOut);
     SL1 sl1(immOut, immSL1);
 
     // Register File
@@ -47,10 +47,10 @@ module CPU (
     wire [`WORD_LEN-1:0] aluInputA, aluInputB, aluOut;
     ALUSrcAMux aluSrcAMux(readData1, pc, ALUSrcA, aluInputA);
     ALUSrcBMux aluSrcBMux(readData2, immOut, ALUSrcB, aluInputB);
-    ALU alu(aluInputA, aluInputB, ALUCtrl, aluOut);
+    ALU alu(aluInputA, aluInputB, ALUCtrl, aluOut, zeroFlag, ltFlag, gtFlag);
 
     // Data Memory
     wire [`WORD_LEN-1:0] memReadData;
-    DMem dmem(clk, memWrite, writeAddr, writeData, memReadData);
-    MemtoRegMux memtoRegMux(ALUOut, memReadData, memtoReg, regWriteData);
+    DMem dmem(clk, memWrite, {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut[`WORD_LEN-1:0]}, readData2, memReadData);
+    MemtoRegMux memtoRegMux(aluOut, memReadData, memtoReg, regWriteData);
 endmodule

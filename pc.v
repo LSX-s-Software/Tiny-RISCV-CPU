@@ -3,10 +3,9 @@
 `include "defines.v"
 
 module PC (
-    input                       clk, reset,
-    input                       en,
-    input      [`WORD_LEN-1:0]	writeData,
-    output reg [`WORD_LEN-1:0]	readData
+    input                       clk, reset, en,
+    input      [`ADDR_SIZE-1:0]	writeData,
+    output reg [`ADDR_SIZE-1:0]	readData
 );
     always @(posedge clk, posedge reset)
     if (reset)
@@ -20,7 +19,7 @@ module addr_adder1 (
     input  [`ADDR_SIZE-1:0] a,
     output [`ADDR_SIZE-1:0] result
 );
-    assign result = a + 4;
+    assign result = a + `ADDR_SIZE'b100;
 endmodule
 
 // PC + imm << 1
@@ -33,12 +32,12 @@ module addr_adder2 (
 endmodule
 
 module PCSrcController (
-    input branch,
-    input branchType,
-    input jump, // unconditional jump
-    input zeroFlag,
-    input ltFlag,
-    input geFlag,
+    input       branch,
+    input [2:0] branchType,
+    input       jump, // unconditional jump
+    input       zeroFlag,
+    input       ltFlag,
+    input       geFlag,
 
     output reg branchCtrl
 );
@@ -62,4 +61,6 @@ module PCSrcController (
         default:
             branchCtrl <= 1'b0;
     endcase
+    else
+        branchCtrl <= 1'b0;
 endmodule

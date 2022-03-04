@@ -14,12 +14,12 @@ endmodule
 
 module ALUSrcAMux (
     input [`WORD_LEN-1:0] reg1Data, // data from the register file
-    input [`WORD_LEN-1:0] pc,   // data from PC
+    input [`ADDR_SIZE-1:0] pc,   // data from PC
     input ALUSrcA,
 
     output [`WORD_LEN-1:0] out
 );
-    assign out = (ALUSrcA == 0) ? reg1Data : pc;
+    assign out = (ALUSrcA == 0) ? reg1Data : {{{`WORD_LEN-`ADDR_SIZE}{1'b0}}, pc[`ADDR_SIZE-1:0]};
 endmodule
 
 module ALUSrcBMux (

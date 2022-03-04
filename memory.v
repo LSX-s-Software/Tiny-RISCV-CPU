@@ -6,13 +6,7 @@ module IMem(
     input  [`ADDR_SIZE-1:0]   addr,
     output [`INSTR_SIZE-1:0]  data
 );
-
     reg [`INSTR_SIZE-1:0] RAM[`IMEM_SIZE-1:0];
-
-    initial
-    begin
-        $readmemh("riscv32_sim1.dat", RAM);
-    end
 
     assign data = RAM[addr[11:2]]; // instruction size aligned
 endmodule
@@ -20,7 +14,8 @@ endmodule
 
 module DMem(
     input                   clk, writeEnable,
-    input  [`WORD_LEN-1:0]  addr, writeData,
+    input  [`ADDR_SIZE-1:0] addr,
+    input  [`WORD_LEN-1:0]  writeData,
     output [`WORD_LEN-1:0]  readData
 );
 

@@ -25,11 +25,11 @@ module ControlUnit (
 
     // MUX control signals
     assign ALUSrcA = (opcode == `OP_AUIPC);
-    assign ALUSrcB = (opcode == `OP_I_TYPE);
+    assign ALUSrcB = (opcode == `OP_I_TYPE | opcode == `OP_LUI | opcode == `OP_AUIPC);
     assign branch = (opcode == `OP_BRANCH);
     assign memWrite = 0;
     assign memtoReg = 0;
-    assign regWrite = (opcode == `OP_R_TYPE | opcode == `OP_I_TYPE | opcode == `OP_JAL | opcode == `OP_JALR) & (rd != 6'b000000);
+    assign regWrite = (opcode == `OP_R_TYPE | opcode == `OP_I_TYPE | opcode == `OP_JAL | opcode == `OP_JALR | opcode == `OP_LUI | opcode == `OP_AUIPC) & (rd != 6'b000000);
 
     // auxiliary signals
 
