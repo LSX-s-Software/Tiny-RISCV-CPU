@@ -2,7 +2,7 @@
 
 `include "defines.v"
 
-module CPU (
+module xgriscv_pipeline (
     input clk, rst,
 
     output [`ADDR_SIZE-1:0] pc
@@ -18,7 +18,7 @@ module CPU (
 
     // Instruction Memory
     wire [`INSTR_SIZE-1:0] instr;
-    IMem imem(pc, instr);
+    IMem U_imem(pc, instr);
 
     // Control Unit
     wire ALUSrcA, ALUSrcB, branch, jump, memWrite, memtoReg, regWrite;
@@ -41,7 +41,7 @@ module CPU (
     wire [`REG_IDX_WIDTH-1:0] writeAddr = instr[11:7];
     wire [`WORD_LEN-1:0] readData1, readData2, regWriteData;
 
-    RegFile regfile(clk, readAddr1, readAddr2, readData1, readData2, regWrite, writeAddr, regWriteData);
+    RegFile regfile(clk, readAddr1, readAddr2, readData1, readData2, regWrite, writeAddr, regWriteData, pc);
 
     // ALU
     wire [`WORD_LEN-1:0] aluInputA, aluInputB, aluOut;
@@ -51,6 +51,6 @@ module CPU (
 
     // Data Memory
     wire [`WORD_LEN-1:0] memReadData;
-    DMem dmem(clk, memWrite, {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut[`WORD_LEN-1:0]}, readData2, memReadData);
+    DMem dmem(clk, memWrite, {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut[`WORD_LEN-1:0]}, readData2, pc, memReadData);
     MemtoRegMux memtoRegMux(aluOut, memReadData, memtoReg, regWriteData);
 endmodule

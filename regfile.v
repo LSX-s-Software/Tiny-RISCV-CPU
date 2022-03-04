@@ -12,7 +12,8 @@ module RegFile(
 
     input                      	writeEnable,
     input  [`REG_IDX_WIDTH-1:0] writeAddr,
-    input  [`WORD_LEN-1:0]      writeData
+    input  [`WORD_LEN-1:0]      writeData,
+    input  [`ADDR_SIZE-1:0] 	pc
 );
 
     reg [`WORD_LEN-1:0] registerFile[`REG_COUNT-1:0];
@@ -24,7 +25,7 @@ module RegFile(
             // DO NOT CHANGE THIS display LINE!!!
             // 不要修改下面这行display语句！！！
             /**********************************************************************/
-            $display("x%d = %h", writeAddr, writeData);
+            $display("pc = %h: x%d = %h", pc, writeAddr, writeData);
             /**********************************************************************/
         end
 
