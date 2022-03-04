@@ -12,14 +12,24 @@ module PCSrcMux (
     assign out = (PCSrc == 0) ? seqAddr : jmpAddr;
 endmodule
 
-module ALUSrcMux (
-    input [`WORD_LEN-1:0] reg2Data, // data from the register file
-    input [`WORD_LEN-1:0] immData,  // data from the immediate generator
-    input ALUSrc,
+module ALUSrcAMux (
+    input [`WORD_LEN-1:0] reg1Data, // data from the register file
+    input [`WORD_LEN-1:0] pc,   // data from PC
+    input ALUSrcA,
 
     output [`WORD_LEN-1:0] out
 );
-    assign out = (ALUSrc == 0) ? reg2Data : immData;
+    assign out = (ALUSrcA == 0) ? reg1Data : pc;
+endmodule
+
+module ALUSrcBMux (
+    input [`WORD_LEN-1:0] reg2Data, // data from the register file
+    input [`WORD_LEN-1:0] immData,  // data from the immediate generator
+    input ALUSrcB,
+
+    output [`WORD_LEN-1:0] out
+);
+    assign out = (ALUSrcB == 0) ? reg2Data : immData;
 endmodule
 
 module MemtoRegMux (

@@ -7,7 +7,8 @@ module ControlUnit (
 
     output reg [4:0] immCtrl,             // for the ID stage
     output reg [3:0] ALUCtrl,             // for the EX stage
-    output           ALUSrc,
+    output           ALUSrcA,
+    output           ALUSrcB,
     output           branch,
     output     [2:0] branchType,
     output           jump,
@@ -23,7 +24,8 @@ module ControlUnit (
     wire [4:0] rd = instr[11:7];
 
     // MUX control signals
-    assign ALUSrc = (opcode == `OP_I_TYPE);
+    assign ALUSrcA = (opcode == `OP_AUIPC);
+    assign ALUSrcB = (opcode == `OP_I_TYPE);
     assign branch = (opcode == `OP_BRANCH);
     assign memWrite = 0;
     assign memtoReg = 0;
@@ -37,8 +39,16 @@ module ControlUnit (
     // ALU & immediate generator control signals
     always @(*)
     case(opcode)
-        // `OP_LUI:
-        // `OP_AUIPC:
+        `OP_LUI:
+            begin
+                immCtrl <= `IMM_CTRL_UTYPE;
+                ALUCtrl <= `ALU_CTRL_LUI;
+            end
+        `OP_AUIPC:
+            begin
+                immCtrl <= `IMM_CTRL_UTYPE;
+                ALUCtrl <= `ALU_CTRL_AUIPC;
+            end
         `OP_JAL:
             begin
                 immCtrl <= `IMM_CTRL_JTYPE;

@@ -21,13 +21,13 @@ module CPU (
     IMem imem(pc, instr);
 
     // Control Unit
-    wire ALUSrc, branch, jump, memWrite, memtoReg, regWrite;
+    wire ALUSrcA, ALUSrcB, branch, jump, memWrite, memtoReg, regWrite;
     wire [4:0] immCtrl;
     wire [3:0] ALUCtrl;
     wire [2:0] branchType;
     wire zeroFlag, ltFlag, gtFlag;
 
-    ControlUnit cu(instr, immCtrl, ALUCtrl, ALUSrc, branch, branchType, jump, memWrite, memtoReg, regWrite);
+    ControlUnit cu(instr, immCtrl, ALUCtrl, ALUSrcA, ALUSrcB, branch, branchType, jump, memWrite, memtoReg, regWrite);
     PCSrcController pcSrcController(branch, branchType, jump, zeroFlag, ltFlag, gtFlag, branchCtrl);
 
     // Immdiate
@@ -44,9 +44,10 @@ module CPU (
     RegFile regfile(clk, readAddr1, readAddr2, readData1, readData2, regWrite, writeAddr, regWriteData);
 
     // ALU
-    wire [`WORD_LEN-1:0] aluInputB, aluOut;
-    ALUSrcMux aluSrcMux(readData2, immOut, ALUSrc, aluInputB);
-    ALU alu(readData1, aluInputB, ALUCtrl, aluOut);
+    wire [`WORD_LEN-1:0] aluInputA, aluInputB, aluOut;
+    ALUSrcAMux aluSrcAMux(readData1, pc, ALUSrcA, aluInputA);
+    ALUSrcBMux aluSrcBMux(readData2, immOut, ALUSrcB, aluInputB);
+    ALU alu(aluInputA, aluInputB, ALUCtrl, aluOut);
 
     // Data Memory
     wire [`WORD_LEN-1:0] memReadData;
