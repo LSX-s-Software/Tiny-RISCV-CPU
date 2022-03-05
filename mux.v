@@ -13,8 +13,8 @@ module PCSrcMux (
 endmodule
 
 module ALUSrcAMux (
-    input [`WORD_LEN-1:0] reg1Data, // data from the register file
-    input [`ADDR_SIZE-1:0] pc,   // data from PC
+    input [`WORD_LEN-1:0] reg1Data, // rs1
+    input [`ADDR_SIZE-1:0] pc,      // PC
     input ALUSrcA,
 
     output [`WORD_LEN-1:0] out
@@ -23,8 +23,8 @@ module ALUSrcAMux (
 endmodule
 
 module ALUSrcBMux (
-    input [`WORD_LEN-1:0] reg2Data, // data from the register file
-    input [`WORD_LEN-1:0] immData,  // data from the immediate generator
+    input [`WORD_LEN-1:0] reg2Data, // rs2
+    input [`WORD_LEN-1:0] immData,  // immediate data
     input ALUSrcB,
 
     output [`WORD_LEN-1:0] out

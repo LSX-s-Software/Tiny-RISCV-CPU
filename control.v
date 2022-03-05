@@ -10,7 +10,7 @@ module ControlUnit (
     output           ALUSrcA,
     output           ALUSrcB,
     output           branch,
-    output     [2:0] branchType,
+    output     [2:0] funct3,
     output reg [1:0] jumpType,
     output           memWrite,            // for the MEM stage
     output reg [1:0] memtoReg,
@@ -18,7 +18,7 @@ module ControlUnit (
 );
     // extract fields from instruction
     wire [6:0] opcode = instr[6:0];
-    wire [2:0] funct3 = instr[14:12];
+    assign funct3 = instr[14:12];
     wire [6:0] funct7 = instr[31:25];
     wire [4:0] rs1 = instr[19:15];
     wire [4:0] rs2 = instr[24:20];
@@ -26,10 +26,21 @@ module ControlUnit (
 
     // MUX control signals
     assign ALUSrcA = (opcode == `OP_AUIPC);
-    assign ALUSrcB = (opcode == `OP_I_TYPE | opcode == `OP_LUI | opcode == `OP_AUIPC);
+    assign ALUSrcB = (opcode == `OP_I_TYPE
+                     | opcode == `OP_LUI
+                     | opcode == `OP_AUIPC
+                     | opcode == `OP_LOAD
+                     | opcode == `OP_STORE);
     assign branch = (opcode == `OP_BRANCH);
-    assign memWrite = 0;
-    assign regWrite = (opcode == `OP_R_TYPE | opcode == `OP_I_TYPE | opcode == `OP_JAL | opcode == `OP_JALR | opcode == `OP_LUI | opcode == `OP_AUIPC) & (rd != 6'b000000);
+    assign memWrite = (opcode == `OP_STORE);
+    assign regWrite = (opcode == `OP_R_TYPE
+                      | opcode == `OP_I_TYPE
+                      | opcode == `OP_JAL
+                      | opcode == `OP_JALR
+                      | opcode == `OP_LUI
+                      | opcode == `OP_AUIPC
+                      | opcode == `OP_LOAD
+                      ) & (rd != `REG_IDX_WIDTH'b0);
 
     always @(*)
     if (opcode == `OP_JAL | opcode == `OP_JALR)
@@ -37,15 +48,16 @@ module ControlUnit (
             jumpType <= opcode == `OP_JAL ? `JUMP_TYPE_JAL : `JUMP_TYPE_JALR;
             memtoReg <= 2'b10;
         end
+    else if (opcode == `OP_LOAD)
+        begin
+            jumpType <= `JUMP_TYPE_NONE;
+            memtoReg <= 2'b01;
+        end
     else
         begin
             jumpType <= `JUMP_TYPE_NONE;
             memtoReg <= 2'b00;
         end
-
-    // auxiliary signals
-
-    assign branchType = funct3;
 
     // ALU & immediate generator control signals
     always @(*)
@@ -90,8 +102,16 @@ module ControlUnit (
                         ALUCtrl <= `ALU_CTRL_ZERO;
                 endcase
             end
-        // `OP_LOAD:
-        // `OP_STORE:
+        `OP_LOAD:
+            begin
+                immCtrl <= `IMM_CTRL_ITYPE;
+                ALUCtrl <= `ALU_CTRL_ADD;
+            end
+        `OP_STORE:
+            begin
+                immCtrl <= `IMM_CTRL_STYPE;
+                ALUCtrl <= `ALU_CTRL_ADD;
+            end
         `OP_I_TYPE:
             begin
                 immCtrl <= `IMM_CTRL_ITYPE;

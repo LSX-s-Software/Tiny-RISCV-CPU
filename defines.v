@@ -34,15 +34,11 @@
 `define FUNCT3_BLTU	3'b110
 `define FUNCT3_BGEU	3'b111
 
-`define FUNCT3_LB	3'b000
-`define FUNCT3_LH	3'b001
-`define FUNCT3_LW	3'b010
-`define FUNCT3_LBU	3'b100
-`define FUNCT3_LHU	3'b101
-
-`define FUNCT3_SB	3'b000
-`define FUNCT3_SH	3'b001
-`define FUNCT3_SW	3'b010
+`define FUNCT3_BYTE	3'b000
+`define FUNCT3_HALF	3'b001
+`define FUNCT3_WORD	3'b010
+`define FUNCT3_BYTE_UNSIGNED	3'b100
+`define FUNCT3_HALF_UNSIGNED	3'b101
 
 `define FUNCT3_ADDI	3'b000
 `define FUNCT3_SLTI	3'b010

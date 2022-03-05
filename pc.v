@@ -24,7 +24,7 @@ endmodule
 
 module PCSrcController (
     input       branch,
-    input [2:0] branchType,
+    input [2:0] branchType, // funct3
     input       jump,       // unconditional jump
     input       sltResult,  // SLT / SLTU result from ALU
     input       zeroFlag,

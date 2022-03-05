@@ -28,12 +28,12 @@ module CPU (
     wire [`WORD_LEN-1:0] aluOut;
     wire [4:0] immCtrl;
     wire [3:0] ALUCtrl;
-    wire [2:0] branchType;
+    wire [2:0] funct3;
     wire [1:0] memtoReg;
     wire zeroFlag;
 
-    ControlUnit cu(instr, immCtrl, ALUCtrl, ALUSrcA, ALUSrcB, branch, branchType, jumpType, memWrite, memtoReg, regWrite);
-    PCSrcController pcSrcController(branch, branchType, jumpType != `JUMP_TYPE_NONE, aluOut[0], zeroFlag, branchCtrl);
+    ControlUnit cu(instr, immCtrl, ALUCtrl, ALUSrcA, ALUSrcB, branch, funct3, jumpType, memWrite, memtoReg, regWrite);
+    PCSrcController pcSrcController(branch, funct3, jumpType != `JUMP_TYPE_NONE, aluOut[0], zeroFlag, branchCtrl);
 
     // Immdiate
     ImmGen immGen(instr, immCtrl, immOut);
@@ -54,6 +54,6 @@ module CPU (
 
     // Data Memory
     wire [`WORD_LEN-1:0] memReadData;
-    DMem dmem(clk, memWrite, {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut}, readData2, memReadData);
+    DMem dmem(clk, memWrite, {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut}, funct3, readData2, memReadData);
     MemtoRegMux memtoRegMux(aluOut, memReadData, newSeqAddr, memtoReg, regWriteData);
 endmodule
