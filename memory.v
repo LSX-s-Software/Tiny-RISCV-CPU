@@ -19,24 +19,46 @@ module DMem(
     input  [`WORD_LEN-1:0]  writeData,
     output reg [`WORD_LEN-1:0]  readData
 );
+    reg [`WORD_LEN-1:0] RAM[`DMEM_SIZE-1:0];
 
-    reg [7:0] RAM[`DMEM_SIZE-1:0];
+    // word aligned data
+    wire [`ADDR_SIZE-3:0] realAccessAddr = addr[`ADDR_SIZE-1:2];
+    wire [`WORD_LEN-1:0] readWord = RAM[realAccessAddr];
+    wire [1:0] wordOffset = addr[1:0];
 
-    wire [`WORD_LEN-1:0] readWord = {RAM[addr + 3], RAM[addr + 2], RAM[addr + 1], RAM[addr]};
-
-    // Read data
+    // split data
     always @(*)
     case (unitSize)
         `FUNCT3_BYTE:
-            readData <= {{{`WORD_LEN-8}{readWord[7]}}, readWord[7:0]};
+            case (wordOffset)
+                2'b00: readData <= {{{`WORD_LEN-8}{readWord[7]}}, readWord[7:0]};
+                2'b01: readData <= {{{`WORD_LEN-8}{readWord[15]}}, readWord[15:8]};
+                2'b10: readData <= {{{`WORD_LEN-8}{readWord[23]}}, readWord[23:16]};
+                2'b11: readData <= {{{`WORD_LEN-8}{readWord[31]}}, readWord[31:24]};
+                default: readData <= {{{`WORD_LEN-8}{readWord[7]}}, readWord[7:0]};
+            endcase
         `FUNCT3_HALF:
-            readData <= {{{`WORD_LEN-16}{readWord[15]}}, readWord[15:0]};
+            case (wordOffset)
+                2'b00: readData <= {{{`WORD_LEN-16}{readWord[15]}}, readWord[15:0]};
+                2'b10: readData <= {{{`WORD_LEN-16}{readWord[31]}}, readWord[31:16]};
+                default: readData <= {{{`WORD_LEN-16}{readWord[15]}}, readWord[15:0]};
+            endcase
         `FUNCT3_WORD:
             readData <= readWord;
         `FUNCT3_BYTE_UNSIGNED:
-            readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[7:0]};
+            case (wordOffset)
+                2'b00: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[7:0]};
+                2'b01: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[15:8]};
+                2'b10: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[23:16]};
+                2'b11: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[31:24]};
+                default: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[7:0]};
+            endcase
         `FUNCT3_HALF_UNSIGNED:
-            readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[15:0]};
+            case (wordOffset)
+                2'b00: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[15:0]};
+                2'b10: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[31:16]};
+                default: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[15:0]};
+            endcase
         default:
             readData <= readWord;
     endcase
@@ -47,18 +69,28 @@ module DMem(
     begin
         case (unitSize)
             `FUNCT3_BYTE:
-                RAM[addr] = writeData[7:0];
+                case (wordOffset)
+                    2'b00: RAM[realAccessAddr][7:0] <= writeData[7:0];
+                    2'b01: RAM[realAccessAddr][15:8] <= writeData[7:0];
+                    2'b10: RAM[realAccessAddr][23:16] <= writeData[7:0];
+                    2'b11: RAM[realAccessAddr][31:24] <= writeData[7:0];
+                    default: RAM[realAccessAddr][7:0] <= writeData[7:0];
+                endcase
             `FUNCT3_HALF:
-                {RAM[addr + 1], RAM[addr]} = writeData[15:0];
+                case (wordOffset)
+                    2'b00: RAM[realAccessAddr][15:0] <= writeData[15:0];
+                    2'b10: RAM[realAccessAddr][31:16] <= writeData[15:0];
+                    default: RAM[realAccessAddr][15:0] <= writeData[15:0];
+                endcase
             `FUNCT3_WORD:
-                {RAM[addr + 3], RAM[addr + 2], RAM[addr + 1], RAM[addr]} = writeData;
+                RAM[realAccessAddr] <= writeData;
             default:
-                RAM[addr] = writeData;
+                RAM[realAccessAddr] <= writeData;
         endcase
         // DO NOT CHANGE THIS display LINE!!!
         // 不要修改下面这行display语句！！！
         /**********************************************************************/
-        $display("dataaddr = %h, memdata = %h", {addr[31:2],2'b00}, {RAM[addr + 3], RAM[addr + 2], RAM[addr + 1], RAM[addr]});
+        $display("dataaddr = %h, memdata = %h", {realAccessAddr, 2'b00}, RAM[realAccessAddr]);
         /**********************************************************************/
   	end
 endmodule
