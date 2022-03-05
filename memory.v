@@ -17,6 +17,7 @@ module DMem(
     input  [`ADDR_SIZE-1:0] addr,
     input  [2:0]            unitSize,
     input  [`WORD_LEN-1:0]  writeData,
+    input  [`ADDR_SIZE-1:0] pc, // for OJ
     output reg [`WORD_LEN-1:0]  readData
 );
 
@@ -58,7 +59,7 @@ module DMem(
         // DO NOT CHANGE THIS display LINE!!!
         // 不要修改下面这行display语句！！！
         /**********************************************************************/
-        $display("dataaddr = %h, memdata = %h", {addr[31:2],2'b00}, {RAM[addr + 3], RAM[addr + 2], RAM[addr + 1], RAM[addr]});
+        $display("pc = %h: dataaddr = %h, memdata = %h", pc, {addr[31:2],2'b00}, {RAM[addr + 3], RAM[addr + 2], RAM[addr + 1], RAM[addr]});
         /**********************************************************************/
   	end
 endmodule
