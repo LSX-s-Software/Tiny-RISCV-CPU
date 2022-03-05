@@ -8,9 +8,7 @@ module ALU(
     input [3:0]             ALUCtrl,
 
     output reg [`WORD_LEN-1:0] ALUOut,
-    output zeroFlag,
-    output ltFlag,
-    output geFlag
+    output zeroFlag
 );
     always @(*)
     case(ALUCtrl)
@@ -37,6 +35,4 @@ module ALU(
     endcase
 
     assign zeroFlag = (ALUOut == `WORD_LEN'b0);
-    assign ltFlag = ALUOut[`WORD_LEN-1];
-    assign geFlag = ~ALUOut[`WORD_LEN-1];
 endmodule

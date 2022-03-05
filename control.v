@@ -11,9 +11,10 @@ module ControlUnit (
     output           ALUSrcB,
     output           branch,
     output     [2:0] branchType,
-    output           jump,
+    output reg [1:0] jumpType,
     output           memWrite,            // for the MEM stage
-    output           memtoReg, regWrite   // for the WB stage
+    output reg [1:0] memtoReg,
+    output           regWrite             // for the WB stage
 );
     // extract fields from instruction
     wire [6:0] opcode = instr[6:0];
@@ -28,13 +29,23 @@ module ControlUnit (
     assign ALUSrcB = (opcode == `OP_I_TYPE | opcode == `OP_LUI | opcode == `OP_AUIPC);
     assign branch = (opcode == `OP_BRANCH);
     assign memWrite = 0;
-    assign memtoReg = 0;
     assign regWrite = (opcode == `OP_R_TYPE | opcode == `OP_I_TYPE | opcode == `OP_JAL | opcode == `OP_JALR | opcode == `OP_LUI | opcode == `OP_AUIPC) & (rd != 6'b000000);
+
+    always @(*)
+    if (opcode == `OP_JAL | opcode == `OP_JALR)
+        begin
+            jumpType <= opcode == `OP_JAL ? `JUMP_TYPE_JAL : `JUMP_TYPE_JALR;
+            memtoReg <= 2'b10;
+        end
+    else
+        begin
+            jumpType <= `JUMP_TYPE_NONE;
+            memtoReg <= 2'b00;
+        end
 
     // auxiliary signals
 
-    assign branchType = (funct3);
-    assign jump = (opcode == `OP_JAL | opcode == `OP_JALR);
+    assign branchType = funct3;
 
     // ALU & immediate generator control signals
     always @(*)
@@ -61,8 +72,23 @@ module ControlUnit (
             end
         `OP_BRANCH:
             begin
-                ALUCtrl <= `ALU_CTRL_SUB;
                 immCtrl <= `IMM_CTRL_BTYPE;
+                case (funct3)
+                    `FUNCT3_BEQ:
+                        ALUCtrl <= `ALU_CTRL_SUB;
+                    `FUNCT3_BNE:
+                        ALUCtrl <= `ALU_CTRL_SUB;
+                    `FUNCT3_BLT:
+                        ALUCtrl <= `ALU_CTRL_SLT;
+                    `FUNCT3_BGE:
+                        ALUCtrl <= `ALU_CTRL_SLT;
+                    `FUNCT3_BLTU:
+                        ALUCtrl <= `ALU_CTRL_SLTU;
+                    `FUNCT3_BGEU:
+                        ALUCtrl <= `ALU_CTRL_SLTU;
+                    default:
+                        ALUCtrl <= `ALU_CTRL_ZERO;
+                endcase
             end
         // `OP_LOAD:
         // `OP_STORE:

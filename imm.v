@@ -30,12 +30,3 @@ module ImmGen (
             immout <= `WORD_LEN'b0;
     endcase
 endmodule
-
-// shift left by 1 for address calculation
-module SL1(
-    input  [`ADDR_SIZE-1:0] in,
-    output [`ADDR_SIZE-1:0] out
-);
-
-  assign out = {in[`ADDR_SIZE-2:0], 1'b0};
-endmodule

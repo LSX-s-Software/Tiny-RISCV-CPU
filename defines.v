@@ -112,3 +112,8 @@
 `define IMM_CTRL_BTYPE	5'b00100
 `define IMM_CTRL_UTYPE	5'b00010
 `define IMM_CTRL_JTYPE	5'b00001
+
+// Jump type
+`define JUMP_TYPE_NONE	2'b00
+`define JUMP_TYPE_JAL	2'b01
+`define JUMP_TYPE_JALR	2'b10

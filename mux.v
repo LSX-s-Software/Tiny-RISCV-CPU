@@ -19,7 +19,7 @@ module ALUSrcAMux (
 
     output [`WORD_LEN-1:0] out
 );
-    assign out = (ALUSrcA == 0) ? reg1Data : {{{`WORD_LEN-`ADDR_SIZE}{1'b0}}, pc[`ADDR_SIZE-1:0]};
+    assign out = (ALUSrcA == 0) ? reg1Data : {{{`WORD_LEN-`ADDR_SIZE}{1'b0}}, pc};
 endmodule
 
 module ALUSrcBMux (
@@ -35,9 +35,16 @@ endmodule
 module MemtoRegMux (
     input [`WORD_LEN-1:0] ALUResult, // result of the ALU
     input [`WORD_LEN-1:0] memData,   // data from the memory
-    input MemtoReg,
+    input [`ADDR_SIZE-1:0] newSeqAddr, // PC + 4
+    input [1:0] MemtoReg,
 
-    output [`WORD_LEN-1:0] out
+    output reg [`WORD_LEN-1:0] out
 );
-    assign out = (MemtoReg == 0) ? ALUResult : memData;
+    always @(*) begin
+        case (MemtoReg)
+            2'b00: out <= ALUResult;
+            2'b01: out <= memData;
+            2'b10: out <= newSeqAddr;
+        endcase
+    end
 endmodule

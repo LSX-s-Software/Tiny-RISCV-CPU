@@ -14,16 +14,7 @@ module PC (
         readData <= writeData;
 endmodule
 
-// PC + 4
-module addr_adder1 (
-    input  [`ADDR_SIZE-1:0] a,
-    output [`ADDR_SIZE-1:0] result
-);
-    assign result = a + `ADDR_SIZE'b100;
-endmodule
-
-// PC + imm << 1
-module addr_adder2 (
+module addrAdder (
     input  [`ADDR_SIZE-1:0] a, b,
     output [`ADDR_SIZE-1:0] result
 );
@@ -34,10 +25,9 @@ endmodule
 module PCSrcController (
     input       branch,
     input [2:0] branchType,
-    input       jump, // unconditional jump
+    input       jump,       // unconditional jump
+    input       sltResult,  // SLT / SLTU result from ALU
     input       zeroFlag,
-    input       ltFlag,
-    input       geFlag,
 
     output reg branchCtrl
 );
@@ -51,13 +41,13 @@ module PCSrcController (
         `FUNCT3_BNE:
             branchCtrl <= ~zeroFlag;
         `FUNCT3_BLT:
-            branchCtrl <= ltFlag;
+            branchCtrl <= sltResult;
         `FUNCT3_BGE:
-            branchCtrl <= geFlag;
+            branchCtrl <= ~sltResult;
         `FUNCT3_BLTU:
-            branchCtrl <= ltFlag;
+            branchCtrl <= sltResult;
         `FUNCT3_BGEU:
-            branchCtrl <= geFlag;
+            branchCtrl <= ~sltResult;
         default:
             branchCtrl <= 1'b0;
     endcase
