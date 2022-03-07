@@ -9,7 +9,7 @@ module CPU (
 );
     // PC
     wire [`ADDR_SIZE-1:0] newPC, newSeqAddr, newJumpAddr;
-    wire [`WORD_LEN-1:0] immOut, immSL1, readData1;
+    wire [`WORD_LEN-1:0] immOut, readData1;
     wire [1:0] jumpType;
     wire branchCtrl;
     PC programCounter(clk, rst, 1'b1, newPC, pc);

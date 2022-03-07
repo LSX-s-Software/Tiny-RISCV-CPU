@@ -19,9 +19,9 @@ module ALU(
         `ALU_CTRL_XOR: 		ALUOut <= a ^ b;
         `ALU_CTRL_AND:      ALUOut <= a & b;
 
-        `ALU_CTRL_SLL:      ALUOut <= a << b;
-        `ALU_CTRL_SRL:      ALUOut <= a >> b;
-        `ALU_CTRL_SRA:      ALUOut <= $signed(a) >>> b;
+        `ALU_CTRL_SLL:      ALUOut <= a << (b & 5'b11111);
+        `ALU_CTRL_SRL:      ALUOut <= a >> (b & 5'b11111);
+        `ALU_CTRL_SRA:      ALUOut <= $signed(a) >>> (b & 5'b11111);
 
         `ALU_CTRL_SUB:      ALUOut <= a - b;
         `ALU_CTRL_SLT:      ALUOut <= $signed(a) < $signed(b) ? 1 : 0;
