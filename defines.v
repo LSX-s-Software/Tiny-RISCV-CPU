@@ -1,4 +1,5 @@
 `define DEBUG
+`define PIPELINING
 
 // ISA related
 
