@@ -17,7 +17,8 @@ module DMem(
     input  [`ADDR_SIZE-1:0] addr,
     input  [2:0]            unitSize,
     input  [`WORD_LEN-1:0]  writeData,
-    output reg [`WORD_LEN-1:0]  readData
+    output reg [`WORD_LEN-1:0]  readData,
+    input [`ADDR_SIZE-1:0] pc_MEM
 );
     reg [`WORD_LEN-1:0] RAM[`DMEM_SIZE-1:0];
 
@@ -87,8 +88,6 @@ module DMem(
             default:
                 RAM[realAccessAddr] <= writeData;
         endcase
-        `ifdef DEBUG
-        $display("dataaddr = %h, memdata = %h", {realAccessAddr, 2'b00}, RAM[realAccessAddr]);
-        `endif
+        $display("pc = %h: dataaddr = %h, memdata = %h", pc_MEM, {realAccessAddr, 2'b00}, RAM[realAccessAddr]);
   	end
 endmodule
