@@ -87,10 +87,8 @@ module DMem(
             default:
                 RAM[realAccessAddr] <= writeData;
         endcase
-        // DO NOT CHANGE THIS display LINE!!!
-        // 不要修改下面这行display语句！！！
-        /**********************************************************************/
+        `ifdef DEBUG
         $display("dataaddr = %h, memdata = %h", {realAccessAddr, 2'b00}, RAM[realAccessAddr]);
-        /**********************************************************************/
+        `endif
   	end
 endmodule

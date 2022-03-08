@@ -6,12 +6,11 @@
 //-----------------------------------------------------------------------------
 // Pipelined Version
 module CPU (
-    input clk, rst,
-    output [`ADDR_SIZE-1:0] pc_IF
+    input clk, rst
 );
     //-------------------------------------------------------------------------
     // IF
-    wire [`ADDR_SIZE-1:0] pc_ID, pc_EX, pc_MEM, pc_WB;
+    wire [`ADDR_SIZE-1:0] pc_IF, pc_ID, pc_EX, pc_MEM, pc_WB;
     wire [`ADDR_SIZE-1:0] newPC, newSeqAddr;
     wire [`ADDR_SIZE-1:0] newJumpAddr_EX, newJumpAddr_MEM;
     wire [`INSTR_SIZE-1:0] instr_IF, instr_ID;

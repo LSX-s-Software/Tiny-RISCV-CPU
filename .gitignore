@@ -124,3 +124,5 @@ vsim.dbg
 !*.xmp
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,modelsim,vivado
+
+tests/
