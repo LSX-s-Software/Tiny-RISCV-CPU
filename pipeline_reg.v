@@ -48,8 +48,6 @@ module IDEXPipeReg (
     input [3:0] ALUCtrlIn,
     input [`REG_IDX_WIDTH-1:0] readAddr1In, readAddr2In,
     input ALUSrcAIn, ALUSrcBIn,
-    input branchIn,
-    input [1:0] jumpTypeIn,
     // -----MEM----
     input [2:0] funct3In,
     input memWriteIn,
@@ -64,8 +62,6 @@ module IDEXPipeReg (
     output [3:0] ALUCtrlOut,
     output [`REG_IDX_WIDTH-1:0] readAddr1Out, readAddr2Out,
     output ALUSrcAOut, ALUSrcBOut,
-    output branchOut,
-    output [1:0] jumpTypeOut,
     output [2:0] funct3Out,
     output [`REG_IDX_WIDTH-1:0] writeAddrOut,
     output memWriteOut, regWriteOut,
@@ -78,8 +74,6 @@ module IDEXPipeReg (
     FlushablePipeReg #(`REG_IDX_WIDTH) readAddr2PipeReg (clk, reset, IDEXFlush, readAddr2In, readAddr2Out);
     FlushablePipeReg #(1) ALUSrcAPipeReg (clk, reset, IDEXFlush, ALUSrcAIn, ALUSrcAOut);
     FlushablePipeReg #(1) ALUSrcBPipeReg (clk, reset, IDEXFlush, ALUSrcBIn, ALUSrcBOut);
-    FlushablePipeReg #(1) branchPipeReg (clk, reset, IDEXFlush, branchIn, branchOut);
-    FlushablePipeReg #(2) jumpTypePipeReg (clk, reset, IDEXFlush, jumpTypeIn, jumpTypeOut);
     FlushablePipeReg #(3) funct3PipeReg (clk, reset, IDEXFlush, funct3In, funct3Out);
     FlushablePipeReg #(1) memWritePipeReg (clk, reset, IDEXFlush, memWriteIn, memWriteOut);
     FlushablePipeReg #(2) memtoRegPipeReg (clk, reset, IDEXFlush, memtoRegIn, memtoRegOut);
@@ -97,9 +91,6 @@ module EXMEMPipeReg (
     input clk, reset,
     // Control signals input
     // -----MEM-----
-    input [`ADDR_SIZE-1:0] newJumpAddrIn,
-    input branchIn,
-    input [1:0] jumpTypeIn,
     input zeroFlagIn,
     input [2:0] funct3In,
     input memWriteIn,
@@ -113,9 +104,6 @@ module EXMEMPipeReg (
     input [`ADDR_SIZE-1:0] PCIn,
 
     // Control signals output
-    output [`ADDR_SIZE-1:0] newJumpAddrOut,
-    output branchOut,
-    output [1:0] jumpTypeOut,
     output zeroFlagOut,
     output [2:0] funct3Out,
     output memWriteOut,
@@ -127,9 +115,6 @@ module EXMEMPipeReg (
     output [`WORD_LEN-1:0] readData2Out,
     output [`ADDR_SIZE-1:0] PCOut
 );
-    PipelineReg #(`ADDR_SIZE) newJumpAddrPipeReg (clk, reset, newJumpAddrIn, newJumpAddrOut);
-    PipelineReg #(1) branchPipeReg (clk, reset, branchIn, branchOut);
-    PipelineReg #(2) jumpTypePipeReg (clk, reset, jumpTypeIn, jumpTypeOut);
     PipelineReg #(1) zeroFlagPipeReg (clk, reset, zeroFlagIn, zeroFlagOut);
     PipelineReg #(3) funct3PipeReg (clk, reset, funct3In, funct3Out);
     PipelineReg #(1) memWritePipeReg (clk, reset, memWriteIn, memWriteOut);

@@ -12,13 +12,12 @@ module CPU (
     // IF
     wire [`ADDR_SIZE-1:0] pc_IF, pc_ID, pc_EX, pc_MEM, pc_WB;
     wire [`ADDR_SIZE-1:0] newPC, newSeqAddr;
-    wire [`ADDR_SIZE-1:0] newJumpAddr_EX, newJumpAddr_MEM;
+    wire [`ADDR_SIZE-1:0] newJumpAddr;
     wire [`INSTR_SIZE-1:0] instr_IF, instr_ID;
-    wire [1:0] jumpType_ID, jumpType_EX, jumpType_MEM;
-    wire branchCtrl_MEM;
+    wire branchCtrl;
 
     addrAdder adder1(pc_IF, {{{`WORD_LEN-3}{1'b0}}, 3'b100}, newSeqAddr);
-    PCSrcMux pcSrcMux(newSeqAddr, newJumpAddr_MEM, branchCtrl_MEM, newPC);
+    PCSrcMux pcSrcMux(newSeqAddr, newJumpAddr, branchCtrl, newPC);
     PC programCounter(clk, rst, 1'b1, newPC, pc_IF);
     IMem imem(pc_IF, instr_IF);
     //-------------------------------------------------------------------------
@@ -26,7 +25,7 @@ module CPU (
     IFIDPipeReg ifidPipeReg(
         .clk(clk),
         .reset(rst),
-        .IFIDFlush(1'b0),
+        .IFIDFlush(branchCtrl),
         .PCIn(pc_IF),
         .instrIn(instr_IF),
         .PCOut(pc_ID),
@@ -39,7 +38,6 @@ module CPU (
     wire [`WORD_LEN-1:0] regWriteData_WB;
     wire ALUSrcA_ID, ALUSrcA_EX;
     wire ALUSrcB_ID, ALUSrcB_EX;
-    wire branch_ID, branch_EX, branch_MEM;
     wire memWrite_ID, memWrite_EX, memWrite_MEM;
     wire regWrite_ID, regWrite_EX, regWrite_MEM, regWrite_WB;
     wire [`WORD_LEN-1:0] imm_ID, imm_EX;
@@ -47,6 +45,8 @@ module CPU (
     wire [3:0] ALUCtrl_ID, ALUCtrl_EX;
     wire [2:0] funct3_ID, funct3_EX, funct3_MEM;
     wire [1:0] memtoReg_ID, memtoReg_EX, memtoReg_MEM, memtoReg_WB;
+    wire isBranchOp;
+    wire [1:0] jumpType;
 
     wire [`REG_IDX_WIDTH-1:0] readAddr1_ID = instr_ID[19:15];
     wire [`REG_IDX_WIDTH-1:0] readAddr2_ID = instr_ID[24:20];
@@ -54,9 +54,21 @@ module CPU (
     wire [`REG_IDX_WIDTH-1:0] writeAddr_ID = instr_ID[11:7];
     wire [`REG_IDX_WIDTH-1:0] writeAddr_EX, writeAddr_MEM, writeAddr_WB;
 
-    ControlUnit cu(instr_ID, immCtrl, ALUCtrl_ID, ALUSrcA_ID, ALUSrcB_ID, branch_ID, funct3_ID, jumpType_ID, memWrite_ID, memtoReg_ID, regWrite_ID);
+    ControlUnit cu(instr_ID, immCtrl, ALUCtrl_ID, ALUSrcA_ID, ALUSrcB_ID, isBranchOp, funct3_ID, jumpType, memWrite_ID, memtoReg_ID, regWrite_ID);
     RegFile regfile(clk, readAddr1_ID, readAddr2_ID, readData1_ID, readData2_ID, regWrite_WB, writeAddr_WB, regWriteData_WB);
     ImmGen immGen(instr_ID, immCtrl, imm_ID);
+
+    wire [`ADDR_SIZE-1:0] addrAdderSrc1 = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, imm_ID};
+    wire [`ADDR_SIZE-1:0] addrAdderSrc2 = jumpType == `JUMP_TYPE_JALR ? {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, readData1_ID} : pc_ID;  // rs1 or PC
+    addrAdder adder2(addrAdderSrc1, addrAdderSrc2, newJumpAddr);
+    PCSrcController pcSrcController(
+        .isBranchOp(isBranchOp),
+        .branchType(funct3_ID),
+        .isJumpOp(jumpType != `JUMP_TYPE_NONE),
+        .rs1(readData1_ID),
+        .rs2(readData2_ID),
+        .branchCtrl(branchCtrl)
+    );
     //-------------------------------------------------------------------------
     // ID/EX
     IDEXPipeReg idexPipeReg(
@@ -73,10 +85,6 @@ module CPU (
         .ALUSrcBIn(ALUSrcB_ID),
         .ALUSrcAOut(ALUSrcA_EX),
         .ALUSrcBOut(ALUSrcB_EX),
-        .branchIn(branch_ID),
-        .branchOut(branch_EX),
-        .jumpTypeIn(jumpType_ID),
-        .jumpTypeOut(jumpType_EX),
         .funct3In(funct3_ID),
         .funct3Out(funct3_EX),
         .memWriteIn(memWrite_ID),
@@ -104,8 +112,6 @@ module CPU (
     wire [1:0] forwardA, forwardB;
     wire forwardMEM;
     wire [`WORD_LEN-1:0] aluOut_EX, aluOut_MEM, aluOut_WB;
-    wire [`ADDR_SIZE-1:0] addrAdderSrc1 = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, imm_EX};
-    wire [`ADDR_SIZE-1:0] addrAdderSrc2 = jumpType_EX == `JUMP_TYPE_JALR ? {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, readData1_EX} : pc_EX;  // rs1 or PC
 
     ALUSrcAMux aluSrcAMux(readData1_EX, pc_EX, ALUSrcA_EX, aluSrcAMuxOut);
     ALUSrcBMux aluSrcBMux(readData2_EX, imm_EX, ALUSrcB_EX, aluSrcBMuxOut);
@@ -125,18 +131,11 @@ module CPU (
     ALUForwardMux forwardMux1(aluSrcAMuxOut, aluOut_MEM , regWriteData_WB, forwardA, aluInputA);
     ALUForwardMux forwardMux2(aluSrcBMuxOut, aluOut_MEM , regWriteData_WB, forwardB, aluInputB);
     ALU alu(aluInputA, aluInputB, ALUCtrl_EX, aluOut_EX, zeroFlag_EX);
-    addrAdder adder2(addrAdderSrc1, addrAdderSrc2, newJumpAddr_EX);
     //-------------------------------------------------------------------------
     // EX/MEM
     EXMEMPipeReg exmemPipeReg(
         .clk(clk),
         .reset(rst),
-        .newJumpAddrIn(newJumpAddr_EX),
-        .newJumpAddrOut(newJumpAddr_MEM),
-        .branchIn(branch_EX),
-        .branchOut(branch_MEM),
-        .jumpTypeIn(jumpType_EX),
-        .jumpTypeOut(jumpType_MEM),
         .zeroFlagIn(zeroFlag_EX),
         .zeroFlagOut(zeroFlag_MEM),
         .funct3In(funct3_EX),
@@ -163,7 +162,6 @@ module CPU (
     wire [`WORD_LEN-1:0] memReadData_MEM, memReadData_WB, memWriteData;
     wire [`ADDR_SIZE-1:0] memWriteAddr = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut_MEM};
 
-    PCSrcController pcSrcController(branch_MEM, funct3_MEM, jumpType_MEM != `JUMP_TYPE_NONE, aluOut_MEM[0], zeroFlag_MEM, branchCtrl_MEM);
     MEMForwardMux forwardMux3(readData2_MEM, regWriteData_WB, forwardMEM, memWriteData);
     DMem dmem(clk, memWrite_MEM, memWriteAddr, funct3_MEM, memWriteData, memReadData_MEM);
     //-------------------------------------------------------------------------
@@ -213,7 +211,7 @@ module CPU (
     IMem imem(pc, instr);
 
     // Control Unit
-    wire ALUSrcA, ALUSrcB, branch, memWrite, regWrite;
+    wire ALUSrcA, ALUSrcB, isBranchOp, memWrite, regWrite;
     wire [`WORD_LEN-1:0] aluOut;
     wire [4:0] immCtrl;
     wire [3:0] ALUCtrl;
@@ -221,8 +219,8 @@ module CPU (
     wire [1:0] memtoReg;
     wire zeroFlag;
 
-    ControlUnit cu(instr, immCtrl, ALUCtrl, ALUSrcA, ALUSrcB, branch, funct3, jumpType, memWrite, memtoReg, regWrite);
-    PCSrcController pcSrcController(branch, funct3, jumpType != `JUMP_TYPE_NONE, aluOut[0], zeroFlag, branchCtrl);
+    ControlUnit cu(instr, immCtrl, ALUCtrl, ALUSrcA, ALUSrcB, isBranchOp, funct3, jumpType, memWrite, memtoReg, regWrite);
+    PCSrcController pcSrcController(isBranchOp, funct3, jumpType != `JUMP_TYPE_NONE, aluOut[0], zeroFlag, branchCtrl);
 
     // Immdiate
     ImmGen immGen(instr, immCtrl, immOut);

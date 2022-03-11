@@ -23,34 +23,37 @@ module addrAdder (
 endmodule
 
 module PCSrcController (
-    input       branch,
+    input       isBranchOp,
     input [2:0] branchType, // funct3
-    input       jump,       // unconditional jump
-    input       sltResult,  // SLT / SLTU result from ALU
-    input       zeroFlag,
+    input       isJumpOp,   // unconditional jump
+    input [`WORD_LEN-1:0] rs1, rs2,  // register data
 
     output reg branchCtrl
 );
+    wire equal = (rs1 == rs2);
+    wire lessThan = ($signed(rs1) < $signed(rs2));
+    wire lessThanUnsigned = (rs1 < rs2);
+
     always @(*)
-    if (jump)
+    if (isJumpOp)
         branchCtrl <= 1'b1;
-    else if(branch)
-    case (branchType)
-        `FUNCT3_BEQ:
-            branchCtrl <= zeroFlag;
-        `FUNCT3_BNE:
-            branchCtrl <= ~zeroFlag;
-        `FUNCT3_BLT:
-            branchCtrl <= sltResult;
-        `FUNCT3_BGE:
-            branchCtrl <= ~sltResult;
-        `FUNCT3_BLTU:
-            branchCtrl <= sltResult;
-        `FUNCT3_BGEU:
-            branchCtrl <= ~sltResult;
-        default:
-            branchCtrl <= 1'b0;
-    endcase
+    else if (isBranchOp)
+        case (branchType)
+            `FUNCT3_BEQ:
+                branchCtrl <= equal;
+            `FUNCT3_BNE:
+                branchCtrl <= ~equal;
+            `FUNCT3_BLT:
+                branchCtrl <= lessThan;
+            `FUNCT3_BGE:
+                branchCtrl <= ~lessThan;
+            `FUNCT3_BLTU:
+                branchCtrl <= lessThanUnsigned;
+            `FUNCT3_BGEU:
+                branchCtrl <= ~lessThanUnsigned;
+            default:
+                branchCtrl <= 1'b0;
+        endcase
     else
         branchCtrl <= 1'b0;
 endmodule

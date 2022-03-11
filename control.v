@@ -85,22 +85,7 @@ module ControlUnit (
         `OP_BRANCH:
             begin
                 immCtrl <= `IMM_CTRL_BTYPE;
-                case (funct3)
-                    `FUNCT3_BEQ:
-                        ALUCtrl <= `ALU_CTRL_SUB;
-                    `FUNCT3_BNE:
-                        ALUCtrl <= `ALU_CTRL_SUB;
-                    `FUNCT3_BLT:
-                        ALUCtrl <= `ALU_CTRL_SLT;
-                    `FUNCT3_BGE:
-                        ALUCtrl <= `ALU_CTRL_SLT;
-                    `FUNCT3_BLTU:
-                        ALUCtrl <= `ALU_CTRL_SLTU;
-                    `FUNCT3_BGEU:
-                        ALUCtrl <= `ALU_CTRL_SLTU;
-                    default:
-                        ALUCtrl <= `ALU_CTRL_ZERO;
-                endcase
+                ALUCtrl <= `ALU_CTRL_ZERO;
             end
         `OP_LOAD:
             begin
