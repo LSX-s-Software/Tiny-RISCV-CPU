@@ -133,27 +133,21 @@ module MEMWBPipeReg (
     input clk, reset,
     // Control signals input
     input [`REG_IDX_WIDTH-1:0] writeAddrIn,
-    input [1:0] memtoRegIn,
     input regWriteIn,
     // Data input
-    input [`WORD_LEN-1:0] ALUResultIn,
-    input [`WORD_LEN-1:0] memReadDataIn,
     input [`ADDR_SIZE-1:0] PCIn,
+    input [`WORD_LEN-1:0] regWriteDataIn,
 
     // Control signals output
     output [`REG_IDX_WIDTH-1:0] writeAddrOut,
-    output [1:0] memtoRegOut,
     output regWriteOut,
     // Data output
-    output [`WORD_LEN-1:0] ALUResultOut,
-    output [`WORD_LEN-1:0] memReadDataOut,
-    output [`ADDR_SIZE-1:0] PCOut
+    output [`ADDR_SIZE-1:0] PCOut,
+    output [`WORD_LEN-1:0] regWriteDataOut
 );
     PipelineReg #(`REG_IDX_WIDTH) writeAddrPipeReg (clk, reset, writeAddrIn, writeAddrOut);
-    PipelineReg #(2) memtoRegPipeReg (clk, reset, memtoRegIn, memtoRegOut);
     PipelineReg #(1) regWritePipeReg (clk, reset, regWriteIn, regWriteOut);
 
-    PipelineReg #(`WORD_LEN) ALUResultPipeReg (clk, reset, ALUResultIn, ALUResultOut);
-    PipelineReg #(`WORD_LEN) memReadDataPipeReg (clk, reset, memReadDataIn, memReadDataOut);
     PipelineReg #(`ADDR_SIZE) pcPipeReg (clk, reset, PCIn, PCOut);
+    PipelineReg #(`WORD_LEN) regWriteDataPipeReg (clk, reset, regWriteDataIn, regWriteDataOut);
 endmodule
