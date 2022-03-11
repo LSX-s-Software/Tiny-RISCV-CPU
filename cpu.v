@@ -48,13 +48,14 @@ module CPU (
     wire [2:0] funct3_ID, funct3_EX, funct3_MEM;
     wire [1:0] memtoReg_ID, memtoReg_EX, memtoReg_MEM, memtoReg_WB;
 
-    wire [`REG_IDX_WIDTH-1:0] readAddr1 = instr_ID[19:15];
-    wire [`REG_IDX_WIDTH-1:0] readAddr2 = instr_ID[24:20];
+    wire [`REG_IDX_WIDTH-1:0] readAddr1_ID = instr_ID[19:15];
+    wire [`REG_IDX_WIDTH-1:0] readAddr2_ID = instr_ID[24:20];
+    wire [`REG_IDX_WIDTH-1:0] readAddr1_EX, readAddr2_EX, readAddr2_MEM;
     wire [`REG_IDX_WIDTH-1:0] writeAddr_ID = instr_ID[11:7];
     wire [`REG_IDX_WIDTH-1:0] writeAddr_EX, writeAddr_MEM, writeAddr_WB;
 
     ControlUnit cu(instr_ID, immCtrl, ALUCtrl_ID, ALUSrcA_ID, ALUSrcB_ID, branch_ID, funct3_ID, jumpType_ID, memWrite_ID, memtoReg_ID, regWrite_ID);
-    RegFile regfile(clk, readAddr1, readAddr2, readData1_ID, readData2_ID, regWrite_WB, writeAddr_WB, regWriteData_WB);
+    RegFile regfile(clk, readAddr1_ID, readAddr2_ID, readData1_ID, readData2_ID, regWrite_WB, writeAddr_WB, regWriteData_WB);
     ImmGen immGen(instr_ID, immCtrl, imm_ID);
     //-------------------------------------------------------------------------
     // ID/EX
@@ -64,6 +65,10 @@ module CPU (
         .IDEXFlush(1'b0),
         .ALUCtrlIn(ALUCtrl_ID),
         .ALUCtrlOut(ALUCtrl_EX),
+        .readAddr1In(readAddr1_ID),
+        .readAddr2In(readAddr2_ID),
+        .readAddr1Out(readAddr1_EX),
+        .readAddr2Out(readAddr2_EX),
         .ALUSrcAIn(ALUSrcA_ID),
         .ALUSrcBIn(ALUSrcB_ID),
         .ALUSrcAOut(ALUSrcA_EX),
@@ -94,13 +99,31 @@ module CPU (
     //-------------------------------------------------------------------------
     // EX
     wire zeroFlag_EX, zeroFlag_MEM;
-    wire [`WORD_LEN-1:0] aluInputA, aluInputB;
+    wire [`WORD_LEN-1:0] aluSrcAMuxOut, aluSrcBMuxOut;
+    wire [`WORD_LEN-1:0] aluInputA, aluInputB; // read ALU input
+    wire [1:0] forwardA, forwardB;
+    wire forwardMEM;
     wire [`WORD_LEN-1:0] aluOut_EX, aluOut_MEM, aluOut_WB;
     wire [`ADDR_SIZE-1:0] addrAdderSrc1 = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, imm_EX};
     wire [`ADDR_SIZE-1:0] addrAdderSrc2 = jumpType_EX == `JUMP_TYPE_JALR ? {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, readData1_EX} : pc_EX;  // rs1 or PC
 
-    ALUSrcAMux aluSrcAMux(readData1_EX, pc_EX, ALUSrcA_EX, aluInputA);
-    ALUSrcBMux aluSrcBMux(readData2_EX, imm_EX, ALUSrcB_EX, aluInputB);
+    ALUSrcAMux aluSrcAMux(readData1_EX, pc_EX, ALUSrcA_EX, aluSrcAMuxOut);
+    ALUSrcBMux aluSrcBMux(readData2_EX, imm_EX, ALUSrcB_EX, aluSrcBMuxOut);
+    ForwardingUnit forwardingUnit(
+        .regWrite_MEM(regWrite_MEM),
+        .regWrite_WB(regWrite_WB),
+        .memWrite_MEM(memWrite_MEM),
+        .readAddr1_EX(readAddr1_EX),
+        .readAddr2_EX(readAddr2_EX),
+        .readAddr2_MEM(readAddr2_MEM),
+        .writeAddr_MEM(writeAddr_MEM),
+        .writeAddr_WB(writeAddr_WB),
+        .forwardA(forwardA),
+        .forwardB(forwardB),
+        .forwardMEM(forwardMEM)
+    );
+    ALUForwardMux forwardMux1(aluSrcAMuxOut, aluOut_MEM , regWriteData_WB, forwardA, aluInputA);
+    ALUForwardMux forwardMux2(aluSrcBMuxOut, aluOut_MEM , regWriteData_WB, forwardB, aluInputB);
     ALU alu(aluInputA, aluInputB, ALUCtrl_EX, aluOut_EX, zeroFlag_EX);
     addrAdder adder2(addrAdderSrc1, addrAdderSrc2, newJumpAddr_EX);
     //-------------------------------------------------------------------------
@@ -120,6 +143,8 @@ module CPU (
         .funct3Out(funct3_MEM),
         .memWriteIn(memWrite_EX),
         .memWriteOut(memWrite_MEM),
+        .readAddr2In(readAddr2_EX),
+        .readAddr2Out(readAddr2_MEM),
         .writeAddrIn(writeAddr_EX),
         .writeAddrOut(writeAddr_MEM),
         .memtoRegIn(memtoReg_EX),
@@ -135,10 +160,12 @@ module CPU (
     );
     //-------------------------------------------------------------------------
     // MEM
-    wire [`WORD_LEN-1:0] memReadData_MEM, memReadData_WB;
+    wire [`WORD_LEN-1:0] memReadData_MEM, memReadData_WB, memWriteData;
+    wire [`ADDR_SIZE-1:0] memWriteAddr = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut_MEM};
 
     PCSrcController pcSrcController(branch_MEM, funct3_MEM, jumpType_MEM != `JUMP_TYPE_NONE, aluOut_MEM[0], zeroFlag_MEM, branchCtrl_MEM);
-    DMem dmem(clk, memWrite_MEM, {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut_MEM}, funct3_MEM, readData2_MEM, memReadData_MEM);
+    MEMForwardMux forwardMux3(readData2_MEM, regWriteData_WB, forwardMEM, memWriteData);
+    DMem dmem(clk, memWrite_MEM, memWriteAddr, funct3_MEM, memWriteData, memReadData_MEM);
     //-------------------------------------------------------------------------
     // MEM/WB
     MEMWBPipeReg memwbReg(

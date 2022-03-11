@@ -46,6 +46,7 @@ module IDEXPipeReg (
     // Control signals input
     // -----EX-----
     input [3:0] ALUCtrlIn,
+    input [`REG_IDX_WIDTH-1:0] readAddr1In, readAddr2In,
     input ALUSrcAIn, ALUSrcBIn,
     input branchIn,
     input [1:0] jumpTypeIn,
@@ -61,6 +62,7 @@ module IDEXPipeReg (
 
     // Control signals output
     output [3:0] ALUCtrlOut,
+    output [`REG_IDX_WIDTH-1:0] readAddr1Out, readAddr2Out,
     output ALUSrcAOut, ALUSrcBOut,
     output branchOut,
     output [1:0] jumpTypeOut,
@@ -72,6 +74,8 @@ module IDEXPipeReg (
     output [`WORD_LEN-1:0] readData1Out, readData2Out, PCOut, immdiateOut
 );
     FlushablePipeReg #(4) ALUCtrlPipeReg (clk, reset, IDEXFlush, ALUCtrlIn, ALUCtrlOut);
+    FlushablePipeReg #(`REG_IDX_WIDTH) readAddr1PipeReg (clk, reset, IDEXFlush, readAddr1In, readAddr1Out);
+    FlushablePipeReg #(`REG_IDX_WIDTH) readAddr2PipeReg (clk, reset, IDEXFlush, readAddr2In, readAddr2Out);
     FlushablePipeReg #(1) ALUSrcAPipeReg (clk, reset, IDEXFlush, ALUSrcAIn, ALUSrcAOut);
     FlushablePipeReg #(1) ALUSrcBPipeReg (clk, reset, IDEXFlush, ALUSrcBIn, ALUSrcBOut);
     FlushablePipeReg #(1) branchPipeReg (clk, reset, IDEXFlush, branchIn, branchOut);
@@ -99,7 +103,7 @@ module EXMEMPipeReg (
     input zeroFlagIn,
     input [2:0] funct3In,
     input memWriteIn,
-    input [`REG_IDX_WIDTH-1:0] writeAddrIn,
+    input [`REG_IDX_WIDTH-1:0] readAddr2In, writeAddrIn,
     // -----WB-----
     input [1:0] memtoRegIn,
     input regWriteIn,
@@ -115,7 +119,7 @@ module EXMEMPipeReg (
     output zeroFlagOut,
     output [2:0] funct3Out,
     output memWriteOut,
-    output [`REG_IDX_WIDTH-1:0] writeAddrOut,
+    output [`REG_IDX_WIDTH-1:0] readAddr2Out, writeAddrOut,
     output [1:0] memtoRegOut,
     output regWriteOut,
     // Data output
@@ -130,6 +134,7 @@ module EXMEMPipeReg (
     PipelineReg #(3) funct3PipeReg (clk, reset, funct3In, funct3Out);
     PipelineReg #(1) memWritePipeReg (clk, reset, memWriteIn, memWriteOut);
     PipelineReg #(`REG_IDX_WIDTH) writeAddrPipeReg (clk, reset, writeAddrIn, writeAddrOut);
+    PipelineReg #(`REG_IDX_WIDTH) readAddr2PipeReg (clk, reset, readAddr2In, readAddr2Out);
     PipelineReg #(2) memtoRegPipeReg (clk, reset, memtoRegIn, memtoRegOut);
     PipelineReg #(1) regWritePipeReg (clk, reset, regWriteIn, regWriteOut);
 
