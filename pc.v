@@ -9,7 +9,7 @@ module PC (
 );
     always @(posedge clk, posedge reset)
     if (reset)
-        readData <= `ADDR_SIZE'h80000000;
+        readData <= `ADDR_SIZE'h00000000;
     else if (en)
         readData <= writeData;
 endmodule

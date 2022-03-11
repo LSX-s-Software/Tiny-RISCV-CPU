@@ -29,7 +29,7 @@ module testbench();
             $display("pc_IF:\t%h", cpu.pc_IF);
             $display("instr_IF:\t%h", cpu.instr_IF);
             `endif
-            if (cpu.pc_WB == 32'h80000078) // set to the address of the last instruction
+            if (cpu.pc_WB == 32'h00000078) // set to the address of the last instruction
             begin
                 $display("pc_WB:\t%h", cpu.pc_WB);
                 //$finish;

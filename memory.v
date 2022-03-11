@@ -87,8 +87,5 @@ module DMem(
             default:
                 RAM[realAccessAddr] <= writeData;
         endcase
-        `ifdef DEBUG
-        $display("dataaddr = %h, memdata = %h", {realAccessAddr, 2'b00}, RAM[realAccessAddr]);
-        `endif
   	end
 endmodule
