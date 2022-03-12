@@ -81,6 +81,7 @@ module CPU (
 
     HazardDetectionUnit hdu(
         .memRead_EX(memRead_EX),
+        .memWrite_ID(memWrite_ID),
         .branchOrJump_ID(isBranchOp || isJumpOp),
         .regWrite_EX(regWrite_EX),
         .readAddr1_ID(readAddr1_ID),
