@@ -13,7 +13,7 @@ endmodule
 
 
 module DMem(
-    input                   clk, writeEnable,
+    input                   clk, readEnable, writeEnable,
     input  [`ADDR_SIZE-1:0] addr,
     input  [2:0]            unitSize,
     input  [`WORD_LEN-1:0]  writeData,
@@ -28,45 +28,46 @@ module DMem(
 
     // split data
     always @(*)
-    case (unitSize)
-        `FUNCT3_BYTE:
-            case (wordOffset)
-                2'b00: readData <= {{{`WORD_LEN-8}{readWord[7]}}, readWord[7:0]};
-                2'b01: readData <= {{{`WORD_LEN-8}{readWord[15]}}, readWord[15:8]};
-                2'b10: readData <= {{{`WORD_LEN-8}{readWord[23]}}, readWord[23:16]};
-                2'b11: readData <= {{{`WORD_LEN-8}{readWord[31]}}, readWord[31:24]};
-                default: readData <= {{{`WORD_LEN-8}{readWord[7]}}, readWord[7:0]};
-            endcase
-        `FUNCT3_HALF:
-            case (wordOffset)
-                2'b00: readData <= {{{`WORD_LEN-16}{readWord[15]}}, readWord[15:0]};
-                2'b10: readData <= {{{`WORD_LEN-16}{readWord[31]}}, readWord[31:16]};
-                default: readData <= {{{`WORD_LEN-16}{readWord[15]}}, readWord[15:0]};
-            endcase
-        `FUNCT3_WORD:
-            readData <= readWord;
-        `FUNCT3_BYTE_UNSIGNED:
-            case (wordOffset)
-                2'b00: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[7:0]};
-                2'b01: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[15:8]};
-                2'b10: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[23:16]};
-                2'b11: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[31:24]};
-                default: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[7:0]};
-            endcase
-        `FUNCT3_HALF_UNSIGNED:
-            case (wordOffset)
-                2'b00: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[15:0]};
-                2'b10: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[31:16]};
-                default: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[15:0]};
-            endcase
-        default:
-            readData <= readWord;
-    endcase
+    if (readEnable) begin
+        case (unitSize)
+            `FUNCT3_BYTE:
+                case (wordOffset)
+                    2'b00: readData <= {{{`WORD_LEN-8}{readWord[7]}}, readWord[7:0]};
+                    2'b01: readData <= {{{`WORD_LEN-8}{readWord[15]}}, readWord[15:8]};
+                    2'b10: readData <= {{{`WORD_LEN-8}{readWord[23]}}, readWord[23:16]};
+                    2'b11: readData <= {{{`WORD_LEN-8}{readWord[31]}}, readWord[31:24]};
+                    default: readData <= {{{`WORD_LEN-8}{readWord[7]}}, readWord[7:0]};
+                endcase
+            `FUNCT3_HALF:
+                case (wordOffset)
+                    2'b00: readData <= {{{`WORD_LEN-16}{readWord[15]}}, readWord[15:0]};
+                    2'b10: readData <= {{{`WORD_LEN-16}{readWord[31]}}, readWord[31:16]};
+                    default: readData <= {{{`WORD_LEN-16}{readWord[15]}}, readWord[15:0]};
+                endcase
+            `FUNCT3_WORD:
+                readData <= readWord;
+            `FUNCT3_BYTE_UNSIGNED:
+                case (wordOffset)
+                    2'b00: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[7:0]};
+                    2'b01: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[15:8]};
+                    2'b10: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[23:16]};
+                    2'b11: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[31:24]};
+                    default: readData <= {{{`WORD_LEN-8}{1'b0}}, readWord[7:0]};
+                endcase
+            `FUNCT3_HALF_UNSIGNED:
+                case (wordOffset)
+                    2'b00: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[15:0]};
+                    2'b10: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[31:16]};
+                    default: readData <= {{{`WORD_LEN-16}{1'b0}}, readWord[15:0]};
+                endcase
+            default:
+                readData <= readWord;
+        endcase
+    end
 
     // Write data
     always @(posedge clk)
-    if (writeEnable)
-    begin
+    if (writeEnable) begin
         case (unitSize)
             `FUNCT3_BYTE:
                 case (wordOffset)

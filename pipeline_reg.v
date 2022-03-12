@@ -14,6 +14,7 @@ module PipelineReg #(
         else       out <= in;
 endmodule
 
+// flushable pipeline register
 module FlushablePipeReg #(
     parameter WIDTH = 1
 ) (
@@ -27,17 +28,34 @@ module FlushablePipeReg #(
         else            out <= in;
 endmodule
 
+// flushable pipeline register with write control
+module FlushableEnPipeReg #(
+    parameter WIDTH = 1
+) (
+    input clk, reset, en, flush,
+    input [WIDTH-1:0] in,
+    output reg [WIDTH-1:0] out
+);
+    always @(posedge clk, posedge reset)
+        if (reset)
+            out <= {{WIDTH}{1'b0}};
+        else if
+            (en && flush) out <= {{WIDTH}{1'b0}};
+        else if (en)
+            out <= in;
+endmodule
+
 // IF/ID pipeline registers
 module IFIDPipeReg (
-    input clk, reset, IFIDFlush,
+    input clk, reset, en, IFIDFlush,
     input [`ADDR_SIZE-1:0] PCIn,
     input [`INSTR_SIZE-1:0] instrIn,
 
     output [`ADDR_SIZE-1:0] PCOut,
     output [`INSTR_SIZE-1:0] instrOut
 );
-    FlushablePipeReg #(`ADDR_SIZE) PCPipeReg (clk, reset, IFIDFlush, PCIn, PCOut);
-    FlushablePipeReg #(`INSTR_SIZE) instrPipeReg (clk, reset, IFIDFlush, instrIn, instrOut);
+    FlushableEnPipeReg #(`ADDR_SIZE) PCPipeReg (clk, reset, en, IFIDFlush, PCIn, PCOut);
+    FlushableEnPipeReg #(`INSTR_SIZE) instrPipeReg (clk, reset, en, IFIDFlush, instrIn, instrOut);
 endmodule
 
 // ID/EX pipeline registers
@@ -50,7 +68,7 @@ module IDEXPipeReg (
     input ALUSrcAIn, ALUSrcBIn,
     // -----MEM----
     input [2:0] funct3In,
-    input memWriteIn,
+    input memReadIn, memWriteIn,
     input [`REG_IDX_WIDTH-1:0] writeAddrIn,
     // -----WB-----
     input [1:0] memtoRegIn,
@@ -64,8 +82,9 @@ module IDEXPipeReg (
     output ALUSrcAOut, ALUSrcBOut,
     output [2:0] funct3Out,
     output [`REG_IDX_WIDTH-1:0] writeAddrOut,
-    output memWriteOut, regWriteOut,
+    output memReadOut, memWriteOut,
     output [1:0] memtoRegOut,
+    output regWriteOut,
     // Data output
     output [`WORD_LEN-1:0] readData1Out, readData2Out, PCOut, immdiateOut
 );
@@ -75,6 +94,7 @@ module IDEXPipeReg (
     FlushablePipeReg #(1) ALUSrcAPipeReg (clk, reset, IDEXFlush, ALUSrcAIn, ALUSrcAOut);
     FlushablePipeReg #(1) ALUSrcBPipeReg (clk, reset, IDEXFlush, ALUSrcBIn, ALUSrcBOut);
     FlushablePipeReg #(3) funct3PipeReg (clk, reset, IDEXFlush, funct3In, funct3Out);
+    FlushablePipeReg #(1) memReadPipeReg (clk, reset, IDEXFlush, memReadIn, memReadOut);
     FlushablePipeReg #(1) memWritePipeReg (clk, reset, IDEXFlush, memWriteIn, memWriteOut);
     FlushablePipeReg #(2) memtoRegPipeReg (clk, reset, IDEXFlush, memtoRegIn, memtoRegOut);
     FlushablePipeReg #(1) regWritePipeReg (clk, reset, IDEXFlush, regWriteIn, regWriteOut);
@@ -93,7 +113,7 @@ module EXMEMPipeReg (
     // -----MEM-----
     input zeroFlagIn,
     input [2:0] funct3In,
-    input memWriteIn,
+    input memReadIn, memWriteIn,
     input [`REG_IDX_WIDTH-1:0] readAddr2In, writeAddrIn,
     // -----WB-----
     input [1:0] memtoRegIn,
@@ -106,7 +126,7 @@ module EXMEMPipeReg (
     // Control signals output
     output zeroFlagOut,
     output [2:0] funct3Out,
-    output memWriteOut,
+    output memReadOut, memWriteOut,
     output [`REG_IDX_WIDTH-1:0] readAddr2Out, writeAddrOut,
     output [1:0] memtoRegOut,
     output regWriteOut,
@@ -117,6 +137,7 @@ module EXMEMPipeReg (
 );
     PipelineReg #(1) zeroFlagPipeReg (clk, reset, zeroFlagIn, zeroFlagOut);
     PipelineReg #(3) funct3PipeReg (clk, reset, funct3In, funct3Out);
+    PipelineReg #(1) memReadPipeReg (clk, reset, memReadIn, memReadOut);
     PipelineReg #(1) memWritePipeReg (clk, reset, memWriteIn, memWriteOut);
     PipelineReg #(`REG_IDX_WIDTH) writeAddrPipeReg (clk, reset, writeAddrIn, writeAddrOut);
     PipelineReg #(`REG_IDX_WIDTH) readAddr2PipeReg (clk, reset, readAddr2In, readAddr2Out);

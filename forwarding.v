@@ -12,15 +12,15 @@ module ForwardingUnit (
     output forwardMEM, forwardR1, forwardR2
 );
     // forward to ALU
-    wire MEM2ALU_A = regWrite_MEM && writeAddr_MEM != `REG_IDX_WIDTH'b0 && readAddr1_EX == writeAddr_MEM;
-    wire WB2ALU_A = regWrite_WB && writeAddr_WB != `REG_IDX_WIDTH'b0 && readAddr1_EX == writeAddr_WB;
-    wire MEM2ALU_B = regWrite_MEM && writeAddr_MEM != `REG_IDX_WIDTH'b0 && readAddr2_EX == writeAddr_MEM && !memWrite_EX;
-    wire WB2ALU_B = regWrite_WB && writeAddr_WB != `REG_IDX_WIDTH'b0 && readAddr2_EX == writeAddr_WB && !memWrite_EX;
+    wire MEM2ALU_A = regWrite_MEM && readAddr1_EX == writeAddr_MEM;
+    wire WB2ALU_A = regWrite_WB && readAddr1_EX == writeAddr_WB;
+    wire MEM2ALU_B = regWrite_MEM && readAddr2_EX == writeAddr_MEM && !memWrite_EX;
+    wire WB2ALU_B = regWrite_WB && readAddr2_EX == writeAddr_WB && !memWrite_EX;
     // forward to MEM
-    assign forwardMEM = regWrite_WB && writeAddr_WB != `REG_IDX_WIDTH'b0 && memWrite_MEM && readAddr2_MEM == writeAddr_WB;
+    assign forwardMEM = regWrite_WB && memWrite_MEM && readAddr2_MEM == writeAddr_WB;
     // forward to ID
-    assign forwardR1 = regWrite_MEM && writeAddr_MEM != `REG_IDX_WIDTH'b0 && readAddr1_ID == writeAddr_MEM;
-    assign forwardR2 = regWrite_MEM && writeAddr_MEM != `REG_IDX_WIDTH'b0 && readAddr2_ID == writeAddr_MEM;
+    assign forwardR1 = regWrite_MEM && readAddr1_ID == writeAddr_MEM;
+    assign forwardR2 = regWrite_MEM && readAddr2_ID == writeAddr_MEM;
 
     always @(*) begin
         // ALUSrcA forwarding

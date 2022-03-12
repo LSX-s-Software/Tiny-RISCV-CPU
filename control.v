@@ -12,7 +12,8 @@ module ControlUnit (
     output           branch,
     output     [2:0] funct3,
     output reg [1:0] jumpType,
-    output           memWrite,            // for the MEM stage
+    output           memRead,             // for the MEM stage
+    output           memWrite,
     output reg [1:0] memtoReg,
     output           regWrite             // for the WB stage
 );
@@ -32,6 +33,7 @@ module ControlUnit (
                      | opcode == `OP_LOAD
                      | opcode == `OP_STORE);
     assign branch = (opcode == `OP_BRANCH);
+    assign memRead = (opcode == `OP_LOAD);
     assign memWrite = (opcode == `OP_STORE);
     assign regWrite = (opcode == `OP_R_TYPE
                       | opcode == `OP_I_TYPE

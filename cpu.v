@@ -14,17 +14,18 @@ module CPU (
     wire [`ADDR_SIZE-1:0] newPC, newSeqAddr;
     wire [`ADDR_SIZE-1:0] newJumpAddr;
     wire [`INSTR_SIZE-1:0] instr_IF, instr_ID;
-    wire branchCtrl;
+    wire branchCtrl, PCEn, IFIDEn;
 
     addrAdder adder1(pc_IF, {{{`WORD_LEN-3}{1'b0}}, 3'b100}, newSeqAddr);
     PCSrcMux pcSrcMux(newSeqAddr, newJumpAddr, branchCtrl, newPC);
-    PC programCounter(clk, rst, 1'b1, newPC, pc_IF);
+    PC programCounter(clk, rst, PCEn, newPC, pc_IF);
     IMem imem(pc_IF, instr_IF);
     //-------------------------------------------------------------------------
     // IF/ID
     IFIDPipeReg ifidPipeReg(
         .clk(clk),
         .reset(rst),
+        .en(IFIDEn),
         .IFIDFlush(branchCtrl),
         .PCIn(pc_IF),
         .instrIn(instr_IF),
@@ -38,15 +39,18 @@ module CPU (
     wire [`WORD_LEN-1:0] regWriteData_MEM, regWriteData_WB;
     wire ALUSrcA_ID, ALUSrcA_EX;
     wire ALUSrcB_ID, ALUSrcB_EX;
+    wire memRead_ID, memRead_EX, memRead_MEM;
     wire memWrite_ID, memWrite_EX, memWrite_MEM;
     wire regWrite_ID, regWrite_EX, regWrite_MEM, regWrite_WB;
     wire [`WORD_LEN-1:0] imm_ID, imm_EX;
     wire [4:0] immCtrl;
     wire [3:0] ALUCtrl_ID, ALUCtrl_EX;
     wire [2:0] funct3_ID, funct3_EX, funct3_MEM;
-    wire [1:0] memtoReg_ID, memtoReg_EX, memtoReg_MEM, memtoReg_WB;
+    wire [1:0] memtoReg_ID, memtoReg_EX, memtoReg_MEM;
     wire isBranchOp;
     wire [1:0] jumpType;
+    wire isJumpOp = jumpType != `JUMP_TYPE_NONE;
+    wire IDEXFlush;
 
     wire [`REG_IDX_WIDTH-1:0] readAddr1_ID = instr_ID[19:15];
     wire [`REG_IDX_WIDTH-1:0] readAddr2_ID = instr_ID[24:20];
@@ -54,7 +58,7 @@ module CPU (
     wire [`REG_IDX_WIDTH-1:0] writeAddr_ID = instr_ID[11:7];
     wire [`REG_IDX_WIDTH-1:0] writeAddr_EX, writeAddr_MEM, writeAddr_WB;
 
-    ControlUnit cu(instr_ID, immCtrl, ALUCtrl_ID, ALUSrcA_ID, ALUSrcB_ID, isBranchOp, funct3_ID, jumpType, memWrite_ID, memtoReg_ID, regWrite_ID);
+    ControlUnit cu(instr_ID, immCtrl, ALUCtrl_ID, ALUSrcA_ID, ALUSrcB_ID, isBranchOp, funct3_ID, jumpType, memRead_ID, memWrite_ID, memtoReg_ID, regWrite_ID);
     RegFile regfile(clk, readAddr1_ID, readAddr2_ID, readData1_ID, readData2_ID, regWrite_WB, writeAddr_WB, regWriteData_WB);
     ImmGen immGen(instr_ID, immCtrl, imm_ID);
 
@@ -69,17 +73,29 @@ module CPU (
     PCSrcController pcSrcController(
         .isBranchOp(isBranchOp),
         .branchType(funct3_ID),
-        .isJumpOp(jumpType != `JUMP_TYPE_NONE),
+        .isJumpOp(isJumpOp),
         .rs1(pcSrcControllerIn1),
         .rs2(pcSrcControllerIn2),
         .branchCtrl(branchCtrl)
+    );
+
+    HazardDetectionUnit hdu(
+        .memRead_EX(memRead_EX),
+        .branchOrJump_ID(isBranchOp || isJumpOp),
+        .regWrite_EX(regWrite_EX),
+        .readAddr1_ID(readAddr1_ID),
+        .readAddr2_ID(readAddr2_ID),
+        .writeAddr_EX(writeAddr_EX),
+        .PCEn(PCEn),
+        .IFIDEn(IFIDEn),
+        .IDEXFlush(IDEXFlush)
     );
     //-------------------------------------------------------------------------
     // ID/EX
     IDEXPipeReg idexPipeReg(
         .clk(clk),
         .reset(rst),
-        .IDEXFlush(1'b0),
+        .IDEXFlush(IDEXFlush),
         .ALUCtrlIn(ALUCtrl_ID),
         .ALUCtrlOut(ALUCtrl_EX),
         .readAddr1In(readAddr1_ID),
@@ -92,6 +108,8 @@ module CPU (
         .ALUSrcBOut(ALUSrcB_EX),
         .funct3In(funct3_ID),
         .funct3Out(funct3_EX),
+        .memReadIn(memRead_ID),
+        .memReadOut(memRead_EX),
         .memWriteIn(memWrite_ID),
         .memWriteOut(memWrite_EX),
         .writeAddrIn(writeAddr_ID),
@@ -116,7 +134,7 @@ module CPU (
     wire [`WORD_LEN-1:0] aluInputA, aluInputB; // read ALU input
     wire [1:0] forwardA, forwardB;
     wire forwardMEM;
-    wire [`WORD_LEN-1:0] aluOut_EX, aluOut_MEM, aluOut_WB;
+    wire [`WORD_LEN-1:0] aluOut_EX, aluOut_MEM;
 
     ALUSrcAMux aluSrcAMux(readData1_EX, pc_EX, ALUSrcA_EX, aluSrcAMuxOut);
     ALUSrcBMux aluSrcBMux(readData2_EX, imm_EX, ALUSrcB_EX, aluSrcBMuxOut);
@@ -150,6 +168,8 @@ module CPU (
         .zeroFlagOut(zeroFlag_MEM),
         .funct3In(funct3_EX),
         .funct3Out(funct3_MEM),
+        .memReadIn(memRead_EX),
+        .memReadOut(memRead_MEM),
         .memWriteIn(memWrite_EX),
         .memWriteOut(memWrite_MEM),
         .readAddr2In(readAddr2_EX),
@@ -170,10 +190,18 @@ module CPU (
     //-------------------------------------------------------------------------
     // MEM
     wire [`WORD_LEN-1:0] memReadData_MEM, memWriteData;
-    wire [`ADDR_SIZE-1:0] memWriteAddr = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut_MEM};
+    wire [`ADDR_SIZE-1:0] memAccessAddr = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut_MEM};
 
     WBMEMForwardMux forwardMux3(readData2_MEM, regWriteData_WB, forwardMEM, memWriteData);
-    DMem dmem(clk, memWrite_MEM, memWriteAddr, funct3_MEM, memWriteData, memReadData_MEM);
+    DMem dmem(
+        .clk(clk),
+        .readEnable(memRead_MEM),
+        .writeEnable(memWrite_MEM),
+        .addr(memAccessAddr),
+        .unitSize(funct3_MEM),
+        .writeData(memWriteData),
+        .readData(memReadData_MEM)
+    );
     MemtoRegMux memtoRegMux(aluOut_MEM, memReadData_MEM, (pc_MEM + 3'b100), memtoReg_MEM, regWriteData_MEM);
     //-------------------------------------------------------------------------
     // MEM/WB
