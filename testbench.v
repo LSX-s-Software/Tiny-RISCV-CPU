@@ -2,6 +2,7 @@
 
 `include "defines.v"
 
+`ifdef DEBUG
 module testbench();
     reg clk, rstn;
 
@@ -53,3 +54,4 @@ module testbench();
         end
     end //end always
 endmodule
+`endif
