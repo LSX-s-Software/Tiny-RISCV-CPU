@@ -111,7 +111,6 @@ module EXMEMPipeReg (
     input clk, reset,
     // Control signals input
     // -----MEM-----
-    input zeroFlagIn,
     input [2:0] funct3In,
     input memReadIn, memWriteIn,
     input [`REG_IDX_WIDTH-1:0] readAddr2In, writeAddrIn,
@@ -124,7 +123,6 @@ module EXMEMPipeReg (
     input [`ADDR_SIZE-1:0] PCIn,
 
     // Control signals output
-    output zeroFlagOut,
     output [2:0] funct3Out,
     output memReadOut, memWriteOut,
     output [`REG_IDX_WIDTH-1:0] readAddr2Out, writeAddrOut,
@@ -135,7 +133,6 @@ module EXMEMPipeReg (
     output [`WORD_LEN-1:0] readData2Out,
     output [`ADDR_SIZE-1:0] PCOut
 );
-    PipelineReg #(1) zeroFlagPipeReg (clk, reset, zeroFlagIn, zeroFlagOut);
     PipelineReg #(3) funct3PipeReg (clk, reset, funct3In, funct3Out);
     PipelineReg #(1) memReadPipeReg (clk, reset, memReadIn, memReadOut);
     PipelineReg #(1) memWritePipeReg (clk, reset, memWriteIn, memWriteOut);

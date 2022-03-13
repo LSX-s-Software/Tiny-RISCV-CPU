@@ -58,8 +58,30 @@ module CPU (
     wire [`REG_IDX_WIDTH-1:0] writeAddr_ID = instr_ID[11:7];
     wire [`REG_IDX_WIDTH-1:0] writeAddr_EX, writeAddr_MEM, writeAddr_WB;
 
-    ControlUnit cu(instr_ID, immCtrl, ALUCtrl_ID, ALUSrcA_ID, ALUSrcB_ID, isBranchOp, funct3_ID, jumpType, memRead_ID, memWrite_ID, memtoReg_ID, regWrite_ID);
-    RegFile regfile(clk, readAddr1_ID, readAddr2_ID, readData1_ID, readData2_ID, regWrite_WB, writeAddr_WB, regWriteData_WB);
+    ControlUnit cu(
+        .instr(instr_ID),
+        .immCtrl(immCtrl),
+        .ALUCtrl(ALUCtrl_ID),
+        .ALUSrcA(ALUSrcA_ID),
+        .ALUSrcB(ALUSrcB_ID),
+        .branch(isBranchOp),
+        .funct3(funct3_ID),
+        .jumpType(jumpType),
+        .memRead(memRead_ID),
+        .memWrite(memWrite_ID),
+        .memtoReg(memtoReg_ID),
+        .regWrite(regWrite_ID)
+    );
+    RegFile regfile(
+        .clk(clk),
+        .readAddr1(readAddr1_ID),
+        .readAddr2(readAddr2_ID),
+        .readData1(readData1_ID),
+        .readdata2(readData2_ID),
+        .writeEnable(regWrite_WB),
+        .writeAddr(writeAddr_WB),
+        .writeData(regWriteData_WB)
+    );
     ImmGen immGen(instr_ID, immCtrl, imm_ID);
 
     wire [`WORD_LEN-1:0] pcSrcControllerIn1, pcSrcControllerIn2;
@@ -130,7 +152,6 @@ module CPU (
     );
     //-------------------------------------------------------------------------
     // EX
-    wire zeroFlag_EX, zeroFlag_MEM;
     wire [`WORD_LEN-1:0] aluSrcAMuxOut, aluSrcBMuxOut;
     wire [`WORD_LEN-1:0] aluInputA, aluInputB; // read ALU input
     wire [1:0] forwardA, forwardB;
@@ -159,14 +180,12 @@ module CPU (
     );
     ALUForwardMux forwardMux1(aluSrcAMuxOut, aluOut_MEM , regWriteData_WB, forwardA, aluInputA);
     ALUForwardMux forwardMux2(aluSrcBMuxOut, aluOut_MEM , regWriteData_WB, forwardB, aluInputB);
-    ALU alu(aluInputA, aluInputB, ALUCtrl_EX, aluOut_EX, zeroFlag_EX);
+    ALU alu(aluInputA, aluInputB, ALUCtrl_EX, aluOut_EX);
     //-------------------------------------------------------------------------
     // EX/MEM
     EXMEMPipeReg exmemPipeReg(
         .clk(clk),
         .reset(rst),
-        .zeroFlagIn(zeroFlag_EX),
-        .zeroFlagOut(zeroFlag_MEM),
         .funct3In(funct3_EX),
         .funct3Out(funct3_MEM),
         .memReadIn(memRead_EX),
@@ -203,7 +222,13 @@ module CPU (
         .writeData(memWriteData),
         .readData(memReadData_MEM)
     );
-    MemtoRegMux memtoRegMux(aluOut_MEM, memReadData_MEM, (pc_MEM + 3'b100), memtoReg_MEM, regWriteData_MEM);
+    MemtoRegMux memtoRegMux(
+        .ALUResult(aluOut_MEM),
+        .memData(memReadData_MEM),
+        .newSeqAddr(pc_MEM + 3'b100),
+        .MemtoReg(memtoReg_MEM),
+        .out(regWriteData_MEM)
+    );
     //-------------------------------------------------------------------------
     // MEM/WB
     MEMWBPipeReg memwbReg(
