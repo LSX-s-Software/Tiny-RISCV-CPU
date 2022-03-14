@@ -77,7 +77,7 @@ module CPU (
         .readAddr1(readAddr1_ID),
         .readAddr2(readAddr2_ID),
         .readData1(readData1_ID),
-        .readdata2(readData2_ID),
+        .readData2(readData2_ID),
         .writeEnable(regWrite_WB),
         .writeAddr(writeAddr_WB),
         .writeData(regWriteData_WB)
@@ -249,14 +249,26 @@ endmodule
 //-----------------------------------------------------------------------------
 // Single Cycle Version
 module CPU (
-    input clk, rst,
-    output [`ADDR_SIZE-1:0] pc
+    input clk, rst
 );
     // PC
-    wire [`ADDR_SIZE-1:0] newPC, newSeqAddr, newJumpAddr;
-    wire [`WORD_LEN-1:0] immOut, readData1;
+    wire [`INSTR_SIZE-1:0] instr;
+    wire [`ADDR_SIZE-1:0] pc, newPC, newSeqAddr, newJumpAddr;
+    wire [`WORD_LEN-1:0] immOut, readData1, readData2, regWriteData;
+    wire [`REG_IDX_WIDTH-1:0] readAddr1 = instr[19:15];
+    wire [`REG_IDX_WIDTH-1:0] readAddr2 = instr[24:20];
+    wire [`REG_IDX_WIDTH-1:0] writeAddr = instr[11:7];
+    wire ALUSrcA, ALUSrcB, isBranchOp, memRead, memWrite, regWrite;
+    wire [`WORD_LEN-1:0] aluInputA, aluInputB, aluOut;
+    wire [`WORD_LEN-1:0] memReadData;
+    wire [4:0] immCtrl;
+    wire [3:0] ALUCtrl;
+    wire [2:0] funct3;
+    wire [1:0] memtoReg;
     wire [1:0] jumpType;
     wire branchCtrl;
+
+    // PC
     PC programCounter(clk, rst, 1'b1, newPC, pc);
     addrAdder adder1(pc, {{{`WORD_LEN-3}{1'b0}}, 3'b100}, newSeqAddr);
     wire [`ADDR_SIZE-1:0] addrAdderSrc1 = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, immOut};
@@ -265,42 +277,70 @@ module CPU (
     PCSrcMux pcSrcMux(newSeqAddr, newJumpAddr, branchCtrl, newPC);
 
     // Instruction Memory
-    wire [`INSTR_SIZE-1:0] instr;
     IMem imem(pc, instr);
 
     // Control Unit
-    wire ALUSrcA, ALUSrcB, isBranchOp, memWrite, regWrite;
-    wire [`WORD_LEN-1:0] aluOut;
-    wire [4:0] immCtrl;
-    wire [3:0] ALUCtrl;
-    wire [2:0] funct3;
-    wire [1:0] memtoReg;
-    wire zeroFlag;
-
-    ControlUnit cu(instr, immCtrl, ALUCtrl, ALUSrcA, ALUSrcB, isBranchOp, funct3, jumpType, memWrite, memtoReg, regWrite);
-    PCSrcController pcSrcController(isBranchOp, funct3, jumpType != `JUMP_TYPE_NONE, aluOut[0], zeroFlag, branchCtrl);
+    ControlUnit cu(
+        .instr(instr),
+        .immCtrl(immCtrl),
+        .ALUCtrl(ALUCtrl),
+        .ALUSrcA(ALUSrcA),
+        .ALUSrcB(ALUSrcB),
+        .branch(isBranchOp),
+        .funct3(funct3),
+        .jumpType(jumpType),
+        .memRead(memRead),
+        .memWrite(memWrite),
+        .memtoReg(memtoReg),
+        .regWrite(regWrite)
+    );
+    PCSrcController pcSrcController(
+        .isBranchOp(isBranchOp),
+        .branchType(funct3),
+        .isJumpOp(jumpType != `JUMP_TYPE_NONE),
+        .rs1(readData1),
+        .rs2(readData2),
+        .branchCtrl(branchCtrl)
+    );
 
     // Immdiate
     ImmGen immGen(instr, immCtrl, immOut);
 
     // Register File
-    wire [`REG_IDX_WIDTH-1:0] readAddr1 = instr[19:15];
-    wire [`REG_IDX_WIDTH-1:0] readAddr2 = instr[24:20];
-    wire [`REG_IDX_WIDTH-1:0] writeAddr = instr[11:7];
-    wire [`WORD_LEN-1:0] readData2, regWriteData;
-
-    RegFile regfile(clk, readAddr1, readAddr2, readData1, readData2, regWrite, writeAddr, regWriteData);
+    RegFile regfile(
+        .clk(clk),
+        .readAddr1(readAddr1),
+        .readAddr2(readAddr2),
+        .readData1(readData1),
+        .readData2(readData2),
+        .writeEnable(regWrite),
+        .writeAddr(writeAddr),
+        .writeData(regWriteData)
+    );
 
     // ALU
-    wire [`WORD_LEN-1:0] aluInputA, aluInputB;
     ALUSrcAMux aluSrcAMux(readData1, pc, ALUSrcA, aluInputA);
     ALUSrcBMux aluSrcBMux(readData2, immOut, ALUSrcB, aluInputB);
-    ALU alu(aluInputA, aluInputB, ALUCtrl, aluOut, zeroFlag);
+    ALU alu(aluInputA, aluInputB, ALUCtrl, aluOut);
 
     // Data Memory
-    wire [`WORD_LEN-1:0] memReadData;
-    DMem dmem(clk, memWrite, {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut}, funct3, readData2, memReadData);
-    MemtoRegMux memtoRegMux(aluOut, memReadData, newSeqAddr, memtoReg, regWriteData);
+    wire [`ADDR_SIZE-1:0] memAccessAddr = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut};
+    DMem dmem(
+        .clk(clk),
+        .readEnable(memRead),
+        .writeEnable(memWrite),
+        .addr(memAccessAddr),
+        .unitSize(funct3),
+        .writeData(readData2),
+        .readData(memReadData)
+    );
+    MemtoRegMux memtoRegMux(
+        .ALUResult(aluOut),
+        .memData(memReadData),
+        .newSeqAddr(newSeqAddr),
+        .MemtoReg(memtoReg),
+        .out(regWriteData)
+    );
 endmodule
 //-----------------------------------------------------------------------------
 `endif

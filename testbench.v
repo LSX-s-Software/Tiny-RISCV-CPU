@@ -31,7 +31,7 @@ module testbench();
             $display("PC:\t %h %h %h %h %h", cpu.pc_IF, cpu.pc_ID, cpu.pc_EX, cpu.pc_MEM, cpu.pc_WB);
             $display("instr: %h %h", cpu.instr_IF, cpu.instr_ID);
 `else
-            $display("pc:\t%h", cpu.pc);
+            $display("PC:\t\t%h", cpu.pc);
             $display("instr:\t%h", cpu.instr);
 `endif
 `endif
