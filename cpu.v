@@ -10,12 +10,12 @@
 module CPU (
     input clk, rst
 );
-    wire [`ADDR_SIZE-1:0] pc_IF, pc_MEM, pc_WB;
+    wire [`ADDR_SIZE-1:0] pc_IF;
     wire [`ADDR_SIZE-1:0] memAccessAddr;
     wire [`INSTR_SIZE-1:0] instr_IF;
     wire [`WORD_LEN-1:0] memWriteData, memReadData_MEM;
     wire [2:0] memAccessUnitSize;
-    wire memWrite_MEM;
+    wire memRead_MEM, memWrite_MEM;
 
     IMem imem(pc_IF, instr_IF);
 
@@ -33,8 +33,6 @@ module CPU (
         .clk(clk),
         .rst(rst),
         .pc_IF(pc_IF),
-        .pc_MEM(pc_MEM),
-        .pc_WB(pc_WB),
         .instr_IF(instr_IF),
         .memRead_MEM(memRead_MEM),
         .memWrite_MEM(memWrite_MEM),
@@ -48,17 +46,17 @@ endmodule
 // CPU core (without memory)
 module CPUCore (
     input  clk, rst,
-    output [`ADDR_SIZE-1:0]   pc_IF, pc_MEM, pc_WB,
+    output [`ADDR_SIZE-1:0]   pc_IF,
     input  [`INSTR_SIZE-1:0]  instr_IF,
     output                    memRead_MEM, memWrite_MEM,
-    output [`ADDR_SIZE-1:0]   memAccessAddr, 
+    output [`ADDR_SIZE-1:0]   memAccessAddr,
     output [2:0]              memAccessUnitSize,
     output [`WORD_LEN-1:0]    memWriteData,
     input  [`WORD_LEN-1:0]    memReadData_MEM
 );
     //-------------------------------------------------------------------------
     // IF
-    wire [`ADDR_SIZE-1:0] pc_ID, pc_EX;
+    wire [`ADDR_SIZE-1:0] pc_ID, pc_EX, pc_MEM, pc_WB;
     wire [`ADDR_SIZE-1:0] newPC, newSeqAddr;
     wire [`ADDR_SIZE-1:0] newJumpAddr;
     wire [`INSTR_SIZE-1:0] instr_ID;

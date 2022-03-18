@@ -5,10 +5,8 @@
 
 `define ADDR_SIZE	    32 // width of an address
 `define INSTR_SIZE      32 // length of an instruction
-`define INSTR_WIDTH     5  // bit width of an instruction
 
 `define WORD_LEN	    32 // data width of a register
-`define WORD_WIDTH	    5  // bit width of a register
 `define REG_COUNT	    32 // number of registers
 `define REG_IDX_WIDTH   5  // width of a register index
 
@@ -68,18 +66,6 @@
 
 `define FUNCT7_SRL	7'b0000000
 `define FUNCT7_SRA	7'b0100000
-
-//RV64I
-`define FUNCT3_LWU	3'b110
-`define FUNCT3_LD	3'b011
-
-`define FUNCT3_SD	3'b011
-
-`define OP_ADDIW	7'b0011011
-`define OP_ADDW		7'b0111011
-
-//ID ALU bus
-`define ID_ALU_WIDTH	16
 
 //ALU CTRL
 `define	ALU_CTRL_MOVEA	4'b0000
