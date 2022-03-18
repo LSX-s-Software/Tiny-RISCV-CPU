@@ -28,17 +28,17 @@ module testbench();
             $display("clock: %d", counter);
 `ifdef PIPELINING
             $display("stage: IF      ID      EX      MEM      WB");
-            $display("PC:\t %h %h %h %h %h", cpu.pc_IF, cpu.pc_ID, cpu.pc_EX, cpu.pc_MEM, cpu.pc_WB);
-            $display("instr: %h %h", cpu.instr_IF, cpu.instr_ID);
+            $display("PC:\t %h %h %h %h %h", cpu.cpuCore.pc_IF, cpu.cpuCore.pc_ID, cpu.cpuCore.pc_EX, cpu.cpuCore.pc_MEM, cpu.cpuCore.pc_WB);
+            $display("instr: %h %h", cpu.cpuCore.instr_IF, cpu.cpuCore.instr_ID);
 `else
             $display("PC:\t\t%h", cpu.pc);
             $display("instr:\t%h", cpu.instr);
 `endif
 `endif
 `ifdef PIPELINING
-            if (cpu.pc_WB == 32'h00000078) // set to the address of the last instruction
+            if (cpu.cpuCore.pc_WB == 32'h00000078) // set to the address of the last instruction
             begin
-                $display("pc_WB:\t%h", cpu.pc_WB);
+                $display("pc_WB:\t%h", cpu.cpuCore.pc_WB);
                 //$finish;
                 $stop;
             end

@@ -5,21 +5,68 @@
 `ifdef PIPELINING
 //-----------------------------------------------------------------------------
 // Pipelined Version
+
+// ModelSim top level module
 module CPU (
     input clk, rst
 );
+    wire [`ADDR_SIZE-1:0] pc_IF, pc_MEM, pc_WB;
+    wire [`ADDR_SIZE-1:0] memAccessAddr;
+    wire [`INSTR_SIZE-1:0] instr_IF;
+    wire [`WORD_LEN-1:0] memWriteData, memReadData_MEM;
+    wire [2:0] memAccessUnitSize;
+    wire memWrite_MEM;
+
+    IMem imem(pc_IF, instr_IF);
+
+    DMem dmem(
+        .clk(clk),
+        .readEnable(memRead_MEM),
+        .writeEnable(memWrite_MEM),
+        .addr(memAccessAddr),
+        .unitSize(memAccessUnitSize),
+        .writeData(memWriteData),
+        .readData(memReadData_MEM)
+    );
+
+    CPUCore cpuCore(
+        .clk(clk),
+        .rst(rst),
+        .pc_IF(pc_IF),
+        .pc_MEM(pc_MEM),
+        .pc_WB(pc_WB),
+        .instr_IF(instr_IF),
+        .memRead_MEM(memRead_MEM),
+        .memWrite_MEM(memWrite_MEM),
+        .memAccessAddr(memAccessAddr),
+        .memAccessUnitSize(memAccessUnitSize),
+        .memWriteData(memWriteData),
+        .memReadData_MEM(memReadData_MEM)
+    );
+endmodule
+
+// CPU core (without memory)
+module CPUCore (
+    input  clk, rst,
+    output [`ADDR_SIZE-1:0]   pc_IF, pc_MEM, pc_WB,
+    input  [`INSTR_SIZE-1:0]  instr_IF,
+    output                    memRead_MEM, memWrite_MEM,
+    output [`ADDR_SIZE-1:0]   memAccessAddr, 
+    output [2:0]              memAccessUnitSize,
+    output [`WORD_LEN-1:0]    memWriteData,
+    input  [`WORD_LEN-1:0]    memReadData_MEM
+);
     //-------------------------------------------------------------------------
     // IF
-    wire [`ADDR_SIZE-1:0] pc_IF, pc_ID, pc_EX, pc_MEM, pc_WB;
+    wire [`ADDR_SIZE-1:0] pc_ID, pc_EX;
     wire [`ADDR_SIZE-1:0] newPC, newSeqAddr;
     wire [`ADDR_SIZE-1:0] newJumpAddr;
-    wire [`INSTR_SIZE-1:0] instr_IF, instr_ID;
+    wire [`INSTR_SIZE-1:0] instr_ID;
     wire branchCtrl, PCEn, IFIDEn;
 
     addrAdder adder1(pc_IF, {{{`WORD_LEN-3}{1'b0}}, 3'b100}, newSeqAddr);
     PCSrcMux pcSrcMux(newSeqAddr, newJumpAddr, branchCtrl, newPC);
     PC programCounter(clk, rst, PCEn, newPC, pc_IF);
-    IMem imem(pc_IF, instr_IF);
     //-------------------------------------------------------------------------
     // IF/ID
     IFIDPipeReg ifidPipeReg(
@@ -39,8 +86,8 @@ module CPU (
     wire [`WORD_LEN-1:0] regWriteData_MEM, regWriteData_WB;
     wire ALUSrcA_ID, ALUSrcA_EX;
     wire ALUSrcB_ID, ALUSrcB_EX;
-    wire memRead_ID, memRead_EX, memRead_MEM;
-    wire memWrite_ID, memWrite_EX, memWrite_MEM;
+    wire memRead_ID, memRead_EX;
+    wire memWrite_ID, memWrite_EX;
     wire regWrite_ID, regWrite_EX, regWrite_MEM, regWrite_WB;
     wire [`WORD_LEN-1:0] imm_ID, imm_EX;
     wire [4:0] immCtrl;
@@ -209,19 +256,10 @@ module CPU (
     );
     //-------------------------------------------------------------------------
     // MEM
-    wire [`WORD_LEN-1:0] memReadData_MEM, memWriteData;
-    wire [`ADDR_SIZE-1:0] memAccessAddr = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut_MEM};
+    assign memAccessAddr = {{{`ADDR_SIZE-`WORD_LEN}{1'b0}}, aluOut_MEM};
+    assign memAccessUnitSize = funct3_MEM;
 
     WBMEMForwardMux forwardMux3(readData2_MEM, regWriteData_WB, forwardMEM, memWriteData);
-    DMem dmem(
-        .clk(clk),
-        .readEnable(memRead_MEM),
-        .writeEnable(memWrite_MEM),
-        .addr(memAccessAddr),
-        .unitSize(funct3_MEM),
-        .writeData(memWriteData),
-        .readData(memReadData_MEM)
-    );
     MemtoRegMux memtoRegMux(
         .ALUResult(aluOut_MEM),
         .memData(memReadData_MEM),
