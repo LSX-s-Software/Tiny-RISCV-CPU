@@ -13,6 +13,10 @@ module RegFile(
     input                      	writeEnable,
     input  [`REG_IDX_WIDTH-1:0] writeAddr,
     input  [`WORD_LEN-1:0]      writeData
+`ifdef FPGA
+    ,input [`REG_IDX_WIDTH-1:0] readAddr3,
+    output [`WORD_LEN-1:0]      readData3
+`endif
 );
 
     reg [`WORD_LEN-1:0] registerFile[`REG_COUNT-1:0];
@@ -28,4 +32,7 @@ module RegFile(
 
     assign readData1 = (readAddr1 != 0) ? registerFile[readAddr1] : 0;
     assign readData2 = (readAddr2 != 0) ? registerFile[readAddr2] : 0;
+`ifdef FPGA
+    assign readData3 = (readAddr3 != 0) ? registerFile[readAddr3] : 0;
+`endif
 endmodule

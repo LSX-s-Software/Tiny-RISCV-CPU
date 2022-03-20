@@ -54,6 +54,10 @@ module CPUCore (
     output [`WORD_LEN-1:0]    memWriteData,
     input  [`WORD_LEN-1:0]    memReadData_MEM
 );
+`ifdef FPGA
+    input [`REG_IDX_WIDTH-1:0] readAddr3;
+    output [`WORD_LEN-1:0] readData3;
+`endif
     //-------------------------------------------------------------------------
     // IF
     wire [`ADDR_SIZE-1:0] pc_ID, pc_EX, pc_MEM, pc_WB;
@@ -126,6 +130,10 @@ module CPUCore (
         .writeEnable(regWrite_WB),
         .writeAddr(writeAddr_WB),
         .writeData(regWriteData_WB)
+`ifdef FPGA
+        ,.readAddr3(readAddr3),
+        .readData3(readData3)
+`endif
     );
     ImmGen immGen(instr_ID, immCtrl, imm_ID);
 

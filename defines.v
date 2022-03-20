@@ -1,5 +1,6 @@
 `define DEBUG
 `define PIPELINING
+`define FPGA
 
 // ISA related
 
