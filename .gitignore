@@ -125,4 +125,6 @@ vsim.dbg
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,modelsim,vivado
 
-tests/
+# Custom test files
+!*.asm
+!*.dat
