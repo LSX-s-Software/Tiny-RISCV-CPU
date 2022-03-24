@@ -53,11 +53,11 @@ module CPUCore (
     output [2:0]              memAccessUnitSize,
     output [`WORD_LEN-1:0]    memWriteData,
     input  [`WORD_LEN-1:0]    memReadData_MEM
-);
 `ifdef FPGA
-    input [`REG_IDX_WIDTH-1:0] readAddr3;
-    output [`WORD_LEN-1:0] readData3;
+    ,input [`REG_IDX_WIDTH-1:0] readAddr3,
+    output [`WORD_LEN-1:0] readData3
 `endif
+);
     //-------------------------------------------------------------------------
     // IF
     wire [`ADDR_SIZE-1:0] pc_ID, pc_EX, pc_MEM, pc_WB;
@@ -77,8 +77,8 @@ module CPUCore (
         .en(IFIDEn),
         .IFIDFlush(branchCtrl),
         .PCIn(pc_IF),
-        .instrIn(instr_IF),
         .PCOut(pc_ID),
+        .instrIn(instr_IF),
         .instrOut(instr_ID)
     );
     //-------------------------------------------------------------------------

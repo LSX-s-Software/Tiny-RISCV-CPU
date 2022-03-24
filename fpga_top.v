@@ -21,7 +21,7 @@ module IP2SOC_Top(
 
     wire [31:0]   seg7_data;
     wire [6:0]    ram_addr;
-    wire [3:0]    cpu_data_amp, ram_amp;
+    wire [2:0]    ram_amp;
     wire          ram_we;
     wire          seg7_we;
 
