@@ -206,13 +206,12 @@ module CPUCore (
     //-------------------------------------------------------------------------
     // EX
     wire [`WORD_LEN-1:0] aluSrcAMuxOut, aluSrcBMuxOut;
-    wire [`WORD_LEN-1:0] aluInputA, aluInputB; // read ALU input
+    wire [`WORD_LEN-1:0] aluInputA, readData2ForwardedData_EX, aluInputB; // read ALU input
     wire [1:0] forwardA, forwardB;
     wire forwardMEM;
     wire [`WORD_LEN-1:0] aluOut_EX, aluOut_MEM;
 
     ALUSrcAMux aluSrcAMux(readData1_EX, pc_EX, ALUSrcA_EX, aluSrcAMuxOut);
-    ALUSrcBMux aluSrcBMux(readData2_EX, imm_EX, ALUSrcB_EX, aluSrcBMuxOut);
     ForwardingUnit forwardingUnit(
         .regWrite_MEM(regWrite_MEM),
         .regWrite_WB(regWrite_WB),
@@ -231,8 +230,9 @@ module CPUCore (
         .forwardR1(forwardR1),
         .forwardR2(forwardR2)
     );
-    ALUForwardMux forwardMux1(aluSrcAMuxOut, aluOut_MEM , regWriteData_WB, forwardA, aluInputA);
-    ALUForwardMux forwardMux2(aluSrcBMuxOut, aluOut_MEM , regWriteData_WB, forwardB, aluInputB);
+    ALUForwardMux forwardMux1(aluSrcAMuxOut, aluOut_MEM, regWriteData_WB, forwardA, aluInputA);
+    ALUForwardMux forwardMux2(readData2_EX, aluOut_MEM, regWriteData_WB, forwardB, readData2ForwardedData_EX);
+    ALUSrcBMux aluSrcBMux(readData2ForwardedData_EX, imm_EX, ALUSrcB_EX, aluInputB);
     ALU alu(aluInputA, aluInputB, ALUCtrl_EX, aluOut_EX);
     //-------------------------------------------------------------------------
     // EX/MEM
