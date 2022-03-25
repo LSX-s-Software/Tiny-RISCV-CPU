@@ -22,7 +22,7 @@ module DMem(
     reg [`WORD_LEN-1:0] RAM[`DMEM_SIZE-1:0];
 
     // word aligned data
-    wire [`ADDR_SIZE-3:0] realAccessAddr = addr[`ADDR_SIZE-1:2];
+    wire [`DMEM_SIZE_WIDTH-1:0] realAccessAddr = addr[`ADDR_SIZE-1:2];
     wire [`WORD_LEN-1:0] readWord = RAM[realAccessAddr];
     wire [1:0] wordOffset = addr[1:0];
 

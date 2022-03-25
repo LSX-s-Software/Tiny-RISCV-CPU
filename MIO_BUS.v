@@ -1,5 +1,7 @@
 // memory IO bus
 
+`include "defines.v"
+
 `timescale 1ns / 1ps
 
 module MIO_BUS(
@@ -12,7 +14,7 @@ module MIO_BUS(
 
     output reg [31:0]  cpu_data_in,   // data to CPU
     output reg [31:0]  ram_data_in,   // data to data memory
-    output reg [6:0]   ram_addr,      // address for data memory
+    output reg [`ADDR_SIZE-1:0] ram_addr,      // address for data memory
     output reg [31:0]  cpuseg7_data,  // cpu seg7 data (from sw instruction)
     output reg         ram_we,        // signal to write data memory
     output reg [2:0]   ram_amp,       // access pattern for data memory
@@ -22,7 +24,7 @@ module MIO_BUS(
 
 //RAM & IO decode signals:
   always @(*) begin
-    ram_addr = 7'h0;
+    ram_addr = `ADDR_SIZE'h0;
     ram_data_in = 32'h0;
     cpuseg7_data = 32'h0;
     cpu_data_in = 32'h0;
@@ -38,7 +40,7 @@ module MIO_BUS(
         seg7_we = mem_w;
       end
       default: begin
-        ram_addr = cpu_data_addr[8:2];
+        ram_addr = cpu_data_addr;
         ram_data_in = cpu_data_out;
         ram_we = mem_w;
         ram_amp = cpu_data_amp;

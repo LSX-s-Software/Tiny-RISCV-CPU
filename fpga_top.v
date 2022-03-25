@@ -1,5 +1,7 @@
 `timescale 1ns / 1ps
 
+`include "defines.v"
+
 `ifdef FPGA
 // FPGA Top Level Module
 module IP2SOC_Top(
@@ -20,7 +22,7 @@ module IP2SOC_Top(
     assign rst = ~rstn;
 
     wire [31:0]   seg7_data;
-    wire [6:0]    ram_addr;
+    wire [`ADDR_SIZE-1:0] ram_addr;
     wire [2:0]    ram_amp;
     wire          ram_we;
     wire          seg7_we;
