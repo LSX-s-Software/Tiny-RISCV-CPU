@@ -7,7 +7,8 @@
 module IP2SOC_Top(
     input         clk,
     input         rstn,
-    input [15:0]  sw_i,
+    input  [15:0] sw_i,     // switches
+    output [15:0] led_o,    // LEDs
     output [7:0]  disp_seg_o, disp_an_o
 );
 
@@ -32,6 +33,8 @@ module IP2SOC_Top(
     wire [31:0]   cpu_data_in;
     wire [31:0]   cpuseg7_data;
     wire [31:0]   reg_data;
+
+    assign led_o = {sw_i[15], clk_CPU, sw_i[13:0]}; // LED[14] = CPU clk, LED[15,13:0] = switches
 
     // Clock speed switch
     CLK_DIV U_CLKDIV(

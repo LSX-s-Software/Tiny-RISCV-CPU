@@ -128,3 +128,5 @@ vsim.dbg
 # Custom test files
 !*.asm
 !*.dat
+
+Nexys4DDR/

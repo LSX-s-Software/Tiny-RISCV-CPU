@@ -18,6 +18,6 @@ module CLK_DIV(
       clkdiv <= clkdiv + 1'b1;
   end
 
-  assign Clk_CPU=(SW15)? clkdiv[25] : clkdiv[2];  // SW15 to select slow cpu clock or fast cpu clk
+  assign Clk_CPU=(SW15)? clkdiv[23] : clkdiv;  // SW15 to select slow cpu clock or fast cpu clk
 
 endmodule
