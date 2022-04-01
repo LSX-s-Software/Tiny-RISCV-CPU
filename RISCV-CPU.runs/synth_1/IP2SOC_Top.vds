@@ -1,0 +1,776 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Fri Apr  1 09:29:32 2022
+# Process ID: 9976
+# Current directory: C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/synth_1
+# Command line: vivado.exe -log IP2SOC_Top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source IP2SOC_Top.tcl
+# Log file: C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/synth_1/IP2SOC_Top.vds
+# Journal file: C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source IP2SOC_Top.tcl -notrace
+Command: synth_design -top IP2SOC_Top -part xc7a100tcsg324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 1172 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 800.422 ; gain = 239.535
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'IP2SOC_Top' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/fpga_top.v:7]
+INFO: [Synth 8-6157] synthesizing module 'CLK_DIV' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/CLK_DIV.v:21]
+INFO: [Synth 8-6155] done synthesizing module 'CLK_DIV' (1#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/CLK_DIV.v:21]
+INFO: [Synth 8-6157] synthesizing module 'imem' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/synth_1/.Xil/Vivado-9976-393A/realtime/imem_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'imem' (2#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/synth_1/.Xil/Vivado-9976-393A/realtime/imem_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'MIO_BUS' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/MIO_BUS.v:7]
+INFO: [Synth 8-6155] done synthesizing module 'MIO_BUS' (3#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/MIO_BUS.v:7]
+INFO: [Synth 8-6157] synthesizing module 'DMem' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/memory.v:15]
+INFO: [Synth 8-226] default block is never used [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/memory.v:34]
+INFO: [Synth 8-226] default block is never used [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/memory.v:50]
+INFO: [Synth 8-226] default block is never used [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/memory.v:73]
+INFO: [Synth 8-6155] done synthesizing module 'DMem' (4#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/memory.v:15]
+INFO: [Synth 8-6157] synthesizing module 'CPUCore' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/cpu.v:47]
+WARNING: [Synth 8-693] zero replication count - replication ignored [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/cpu.v:141]
+WARNING: [Synth 8-693] zero replication count - replication ignored [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/cpu.v:142]
+INFO: [Synth 8-6157] synthesizing module 'addrAdder' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pc.v:17]
+INFO: [Synth 8-6155] done synthesizing module 'addrAdder' (5#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pc.v:17]
+INFO: [Synth 8-6157] synthesizing module 'PCSrcMux' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'PCSrcMux' (6#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:5]
+INFO: [Synth 8-6157] synthesizing module 'PC' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pc.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'PC' (7#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pc.v:5]
+INFO: [Synth 8-6157] synthesizing module 'IFIDPipeReg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:49]
+INFO: [Synth 8-6157] synthesizing module 'FlushableEnPipeReg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:32]
+	Parameter WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'FlushableEnPipeReg' (8#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:32]
+INFO: [Synth 8-6155] done synthesizing module 'IFIDPipeReg' (9#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:49]
+INFO: [Synth 8-6157] synthesizing module 'ControlUnit' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/control.v:5]
+INFO: [Synth 8-226] default block is never used [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/control.v:105]
+INFO: [Synth 8-6155] done synthesizing module 'ControlUnit' (10#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/control.v:5]
+INFO: [Synth 8-6157] synthesizing module 'RegFile' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/regfile.v:8]
+INFO: [Synth 8-251] xx = xxxxxxxx [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/regfile.v:29]
+INFO: [Synth 8-6155] done synthesizing module 'RegFile' (11#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/regfile.v:8]
+INFO: [Synth 8-6157] synthesizing module 'ImmGen' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/imm.v:5]
+WARNING: [Synth 8-693] zero replication count - replication ignored [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/imm.v:26]
+INFO: [Synth 8-6155] done synthesizing module 'ImmGen' (12#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/imm.v:5]
+INFO: [Synth 8-6157] synthesizing module 'MEMIDForwardMux' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:74]
+INFO: [Synth 8-6155] done synthesizing module 'MEMIDForwardMux' (13#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:74]
+INFO: [Synth 8-6157] synthesizing module 'PCSrcController' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pc.v:25]
+INFO: [Synth 8-6155] done synthesizing module 'PCSrcController' (14#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pc.v:25]
+INFO: [Synth 8-6157] synthesizing module 'HazardDetectionUnit' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/hazard_detection.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'HazardDetectionUnit' (15#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/hazard_detection.v:5]
+INFO: [Synth 8-6157] synthesizing module 'IDEXPipeReg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:62]
+INFO: [Synth 8-6157] synthesizing module 'FlushablePipeReg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'FlushablePipeReg' (16#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+INFO: [Synth 8-6157] synthesizing module 'FlushablePipeReg__parameterized0' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+	Parameter WIDTH bound to: 5 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'FlushablePipeReg__parameterized0' (16#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+INFO: [Synth 8-6157] synthesizing module 'FlushablePipeReg__parameterized1' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+	Parameter WIDTH bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'FlushablePipeReg__parameterized1' (16#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+INFO: [Synth 8-6157] synthesizing module 'FlushablePipeReg__parameterized2' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+	Parameter WIDTH bound to: 3 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'FlushablePipeReg__parameterized2' (16#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+INFO: [Synth 8-6157] synthesizing module 'FlushablePipeReg__parameterized3' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+	Parameter WIDTH bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'FlushablePipeReg__parameterized3' (16#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+INFO: [Synth 8-6157] synthesizing module 'FlushablePipeReg__parameterized4' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+	Parameter WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'FlushablePipeReg__parameterized4' (16#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:18]
+INFO: [Synth 8-6155] done synthesizing module 'IDEXPipeReg' (17#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:62]
+INFO: [Synth 8-6157] synthesizing module 'ALUSrcAMux' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:15]
+WARNING: [Synth 8-693] zero replication count - replication ignored [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:22]
+INFO: [Synth 8-6155] done synthesizing module 'ALUSrcAMux' (18#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:15]
+INFO: [Synth 8-6157] synthesizing module 'ForwardingUnit' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'ForwardingUnit' (19#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:6]
+INFO: [Synth 8-6157] synthesizing module 'ALUForwardMux' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:45]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:54]
+INFO: [Synth 8-6155] done synthesizing module 'ALUForwardMux' (20#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:45]
+INFO: [Synth 8-6157] synthesizing module 'ALUSrcBMux' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:25]
+INFO: [Synth 8-6155] done synthesizing module 'ALUSrcBMux' (21#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:25]
+INFO: [Synth 8-6157] synthesizing module 'ALU' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/alu.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'ALU' (22#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/alu.v:5]
+INFO: [Synth 8-6157] synthesizing module 'EXMEMPipeReg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:110]
+INFO: [Synth 8-6157] synthesizing module 'PipelineReg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+	Parameter WIDTH bound to: 3 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'PipelineReg' (23#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+INFO: [Synth 8-6157] synthesizing module 'PipelineReg__parameterized0' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+	Parameter WIDTH bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'PipelineReg__parameterized0' (23#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+INFO: [Synth 8-6157] synthesizing module 'PipelineReg__parameterized1' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+	Parameter WIDTH bound to: 5 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'PipelineReg__parameterized1' (23#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+INFO: [Synth 8-6157] synthesizing module 'PipelineReg__parameterized2' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+	Parameter WIDTH bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'PipelineReg__parameterized2' (23#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+INFO: [Synth 8-6157] synthesizing module 'PipelineReg__parameterized3' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+	Parameter WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'PipelineReg__parameterized3' (23#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'EXMEMPipeReg' (24#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:110]
+WARNING: [Synth 8-693] zero replication count - replication ignored [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/cpu.v:265]
+INFO: [Synth 8-6157] synthesizing module 'WBMEMForwardMux' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:63]
+INFO: [Synth 8-6155] done synthesizing module 'WBMEMForwardMux' (25#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:63]
+INFO: [Synth 8-6157] synthesizing module 'MemtoRegMux' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:35]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:44]
+INFO: [Synth 8-6155] done synthesizing module 'MemtoRegMux' (26#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:35]
+INFO: [Synth 8-6157] synthesizing module 'MEMWBPipeReg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:150]
+INFO: [Synth 8-6155] done synthesizing module 'MEMWBPipeReg' (27#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v:150]
+INFO: [Synth 8-6155] done synthesizing module 'CPUCore' (28#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/cpu.v:47]
+INFO: [Synth 8-6157] synthesizing module 'MULTI_CH32' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/MULTI_CH32.v:22]
+INFO: [Synth 8-6155] done synthesizing module 'MULTI_CH32' (29#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/MULTI_CH32.v:22]
+WARNING: [Synth 8-689] width (34) of port connection 'data7' does not match port width (32) of module 'MULTI_CH32' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/fpga_top.v:110]
+INFO: [Synth 8-6157] synthesizing module 'SEG7x16' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/SEG7x16.v:22]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/SEG7x16.v:88]
+INFO: [Synth 8-6155] done synthesizing module 'SEG7x16' (30#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/SEG7x16.v:22]
+INFO: [Synth 8-6155] done synthesizing module 'IP2SOC_Top' (31#1) [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/fpga_top.v:7]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[6]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[5]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[4]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[3]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[2]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[1]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[0]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[24]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[23]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[22]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[21]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[20]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[19]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[18]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[17]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[16]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[15]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[31]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[30]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[29]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[28]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[27]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[26]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[25]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[24]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[23]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[22]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[21]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[20]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[19]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[18]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[17]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[16]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[15]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[14]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[13]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[12]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 874.672 ; gain = 313.785
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 874.672 ; gain = 313.785
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 874.672 ; gain = 313.785
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.047 . Memory (MB): peak = 874.672 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/ip/imem/imem/imem_in_context.xdc] for cell 'U_IM'
+Finished Parsing XDC File [c:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/ip/imem/imem/imem_in_context.xdc] for cell 'U_IM'
+Parsing XDC File [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/constrs_1/imports/constraints/Nexys4DDR_CPU.xdc]
+Finished Parsing XDC File [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/constrs_1/imports/constraints/Nexys4DDR_CPU.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/constrs_1/imports/constraints/Nexys4DDR_CPU.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/IP2SOC_Top_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/IP2SOC_Top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 981.316 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.008 . Memory (MB): peak = 981.316 ; gain = 0.000
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 981.316 ; gain = 420.430
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a100tcsg324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 981.316 ; gain = 420.430
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property DONT_TOUCH = true for U_IM. (constraint file  auto generated constraint, line ).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 981.316 ; gain = 420.430
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5546] ROM "ALUCtrl" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "ALUCtrl" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "immCtrl" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "o_seg_r" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-327] inferring latch for variable 'readData_reg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/memory.v:35]
+WARNING: [Synth 8-327] inferring latch for variable 'immCtrl_reg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/control.v:69]
+WARNING: [Synth 8-327] inferring latch for variable 'out_reg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/forwarding.v:55]
+WARNING: [Synth 8-327] inferring latch for variable 'out_reg' [C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.srcs/sources_1/imports/mux.v:45]
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 981.316 ; gain = 420.430
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 4     
+	   3 Input     32 Bit       Adders := 1     
+	   2 Input      3 Bit       Adders := 1     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
++---Registers : 
+	               32 Bit    Registers := 14    
+	                8 Bit    Registers := 1     
+	                5 Bit    Registers := 6     
+	                4 Bit    Registers := 1     
+	                3 Bit    Registers := 3     
+	                2 Bit    Registers := 2     
+	                1 Bit    Registers := 9     
++---RAMs : 
+	              32K Bit         RAMs := 1     
+	             1024 Bit         RAMs := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 21    
+	   3 Input     32 Bit        Muxes := 5     
+	   9 Input     32 Bit        Muxes := 1     
+	   4 Input     32 Bit        Muxes := 5     
+	   6 Input     32 Bit        Muxes := 1     
+	  11 Input     32 Bit        Muxes := 1     
+	   3 Input     16 Bit        Muxes := 1     
+	   4 Input      8 Bit        Muxes := 1     
+	   8 Input      8 Bit        Muxes := 1     
+	  10 Input      5 Bit        Muxes := 1     
+	   2 Input      5 Bit        Muxes := 3     
+	   2 Input      4 Bit        Muxes := 2     
+	   3 Input      4 Bit        Muxes := 1     
+	   8 Input      4 Bit        Muxes := 1     
+	  10 Input      4 Bit        Muxes := 2     
+	   2 Input      3 Bit        Muxes := 2     
+	   3 Input      3 Bit        Muxes := 1     
+	   3 Input      2 Bit        Muxes := 3     
+	   2 Input      2 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 7     
+	   3 Input      1 Bit        Muxes := 2     
+	  10 Input      1 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 3     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module CLK_DIV 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 1     
+Module MIO_BUS 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 4     
+	   3 Input     32 Bit        Muxes := 4     
+	   2 Input      3 Bit        Muxes := 1     
+	   3 Input      3 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 2     
+	   3 Input      1 Bit        Muxes := 2     
+Module DMem 
+Detailed RTL Component Info : 
++---RAMs : 
+	              32K Bit         RAMs := 1     
++---Muxes : 
+	   9 Input     32 Bit        Muxes := 1     
+	   4 Input     32 Bit        Muxes := 2     
+	   2 Input     32 Bit        Muxes := 1     
+	   3 Input     32 Bit        Muxes := 1     
+	   6 Input     32 Bit        Muxes := 1     
+	   3 Input     16 Bit        Muxes := 1     
+	   4 Input      8 Bit        Muxes := 1     
+Module addrAdder 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
+Module PCSrcMux 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module PC 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module FlushableEnPipeReg 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 1     
+Module ControlUnit 
+Detailed RTL Component Info : 
++---Muxes : 
+	  10 Input      5 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 1     
+	   3 Input      4 Bit        Muxes := 1     
+	   8 Input      4 Bit        Muxes := 1     
+	  10 Input      4 Bit        Muxes := 2     
+	   3 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 1     
+	  10 Input      1 Bit        Muxes := 1     
+Module RegFile 
+Detailed RTL Component Info : 
++---RAMs : 
+	             1024 Bit         RAMs := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 3     
+Module MEMIDForwardMux 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module PCSrcController 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 1     
+Module FlushablePipeReg 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 1     
++---Muxes : 
+	   2 Input      4 Bit        Muxes := 1     
+Module FlushablePipeReg__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	                5 Bit    Registers := 1     
++---Muxes : 
+	   2 Input      5 Bit        Muxes := 1     
+Module FlushablePipeReg__parameterized1 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module FlushablePipeReg__parameterized2 
+Detailed RTL Component Info : 
++---Registers : 
+	                3 Bit    Registers := 1     
++---Muxes : 
+	   2 Input      3 Bit        Muxes := 1     
+Module FlushablePipeReg__parameterized3 
+Detailed RTL Component Info : 
++---Registers : 
+	                2 Bit    Registers := 1     
++---Muxes : 
+	   2 Input      2 Bit        Muxes := 1     
+Module FlushablePipeReg__parameterized4 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module ALUSrcAMux 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module ForwardingUnit 
+Detailed RTL Component Info : 
++---Muxes : 
+	   3 Input      2 Bit        Muxes := 2     
+Module ALUForwardMux 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input     32 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 1     
+Module ALUSrcBMux 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module ALU 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
+	   3 Input     32 Bit       Adders := 1     
++---XORs : 
+	   2 Input     32 Bit         XORs := 1     
+Module PipelineReg 
+Detailed RTL Component Info : 
++---Registers : 
+	                3 Bit    Registers := 1     
+Module PipelineReg__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module PipelineReg__parameterized1 
+Detailed RTL Component Info : 
++---Registers : 
+	                5 Bit    Registers := 1     
+Module PipelineReg__parameterized2 
+Detailed RTL Component Info : 
++---Registers : 
+	                2 Bit    Registers := 1     
+Module PipelineReg__parameterized3 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
+Module WBMEMForwardMux 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module MemtoRegMux 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input     32 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 1     
+Module CPUCore 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
++---Muxes : 
+	   2 Input     32 Bit        Muxes := 1     
+Module MULTI_CH32 
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 1     
++---Muxes : 
+	  11 Input     32 Bit        Muxes := 1     
+Module SEG7x16 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      3 Bit       Adders := 1     
++---Registers : 
+	               32 Bit    Registers := 1     
+	                8 Bit    Registers := 1     
+	                3 Bit    Registers := 1     
++---Muxes : 
+	   8 Input      8 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:80)
+BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+INFO: [Synth 8-5546] ROM "immCtrl" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[6]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[5]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[4]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[3]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[2]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[1]
+WARNING: [Synth 8-3331] design ImmGen has unconnected port instr[0]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[24]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[23]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[22]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[21]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[20]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[19]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[18]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[17]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[16]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port instr[15]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[31]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[30]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[29]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[28]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[27]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[26]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[25]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[24]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[23]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[22]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[21]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[20]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[19]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[18]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[17]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[16]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[15]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[14]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[13]
+WARNING: [Synth 8-3331] design DMem has unconnected port addr[12]
+INFO: [Synth 8-6851] RAM (RAM_reg) has partial Byte Wide Write Enable pattern, however no output register found in fanout of RAM. Recommended to use supported Byte Wide Write Enable template. 
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cpuCore/\programCounter/readData_reg[0] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (U_7SEG/\o_seg_r_reg[7] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (cpuCore/\idexPipeReg/PCPipeReg/out_reg[0] )
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:26 ; elapsed = 00:00:27 . Memory (MB): peak = 981.316 ; gain = 420.430
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Preliminary Mapping	Report (see note below)
++------------+--------------------------+-----------+----------------------+------------------+
+|Module Name | RTL Object               | Inference | Size (Depth x Width) | Primitives       | 
++------------+--------------------------+-----------+----------------------+------------------+
+|dmem        | RAM_reg                  | Implied   | 1 K x 32             | RAM256X1S x 128	 | 
+|cpuCore     | regfile/registerFile_reg | Implied   | 32 x 32              | RAM32M x 18	     | 
++------------+--------------------------+-----------+----------------------+------------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:33 ; elapsed = 00:00:34 . Memory (MB): peak = 981.316 ; gain = 420.430
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:33 ; elapsed = 00:00:34 . Memory (MB): peak = 981.316 ; gain = 420.430
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Final Mapping	Report
++------------+--------------------------+-----------+----------------------+------------------+
+|Module Name | RTL Object               | Inference | Size (Depth x Width) | Primitives       | 
++------------+--------------------------+-----------+----------------------+------------------+
+|dmem        | RAM_reg                  | Implied   | 1 K x 32             | RAM256X1S x 128	 | 
+|cpuCore     | regfile/registerFile_reg | Implied   | 32 x 32              | RAM32M x 18	     | 
++------------+--------------------------+-----------+----------------------+------------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:34 ; elapsed = 00:00:35 . Memory (MB): peak = 1016.906 ; gain = 456.020
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:38 ; elapsed = 00:00:39 . Memory (MB): peak = 1022.391 ; gain = 461.504
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:38 ; elapsed = 00:00:39 . Memory (MB): peak = 1022.391 ; gain = 461.504
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:39 ; elapsed = 00:00:40 . Memory (MB): peak = 1022.391 ; gain = 461.504
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:39 ; elapsed = 00:00:40 . Memory (MB): peak = 1022.391 ; gain = 461.504
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:39 ; elapsed = 00:00:40 . Memory (MB): peak = 1022.391 ; gain = 461.504
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:39 ; elapsed = 00:00:40 . Memory (MB): peak = 1022.391 ; gain = 461.504
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+--------------+----------+
+|      |BlackBox name |Instances |
++------+--------------+----------+
+|1     |imem          |         1|
++------+--------------+----------+
+
+Report Cell Usage: 
++------+----------+------+
+|      |Cell      |Count |
++------+----------+------+
+|1     |imem      |     1|
+|2     |BUFG      |     6|
+|3     |CARRY4    |    69|
+|4     |LUT1      |     7|
+|5     |LUT2      |   150|
+|6     |LUT3      |   237|
+|7     |LUT4      |   279|
+|8     |LUT5      |   325|
+|9     |LUT6      |   647|
+|10    |MUXF7     |    36|
+|11    |MUXF8     |     1|
+|12    |RAM256X1S |   128|
+|13    |RAM32M    |    18|
+|14    |FDCE      |   492|
+|15    |FDPE      |    23|
+|16    |LD        |   133|
+|17    |IBUF      |    18|
+|18    |OBUF      |    32|
++------+----------+------+
+
+Report Instance Areas: 
++------+--------------------------+------------------------------------+------+
+|      |Instance                  |Module                              |Cells |
++------+--------------------------+------------------------------------+------+
+|1     |top                       |                                    |  2633|
+|2     |  U_7SEG                  |SEG7x16                             |    93|
+|3     |  U_CLKDIV                |CLK_DIV                             |    33|
+|4     |  U_Multi                 |MULTI_CH32                          |   169|
+|5     |  cpuCore                 |CPUCore                             |  2055|
+|6     |    adder1                |addrAdder                           |     8|
+|7     |    adder2                |addrAdder_0                         |    35|
+|8     |    alu                   |ALU                                 |    24|
+|9     |    cu                    |ControlUnit                         |    79|
+|10    |    exmemPipeReg          |EXMEMPipeReg                        |   409|
+|11    |      ALUResultPipeReg    |PipelineReg__parameterized3_12      |   198|
+|12    |      funct3PipeReg       |PipelineReg                         |    16|
+|13    |      memReadPipeReg      |PipelineReg__parameterized0_13      |     1|
+|14    |      memWritePipeReg     |PipelineReg__parameterized0_14      |     1|
+|15    |      memtoRegPipeReg     |PipelineReg__parameterized2         |    49|
+|16    |      pcPipeReg           |PipelineReg__parameterized3_15      |    40|
+|17    |      readAddr2PipeReg    |PipelineReg__parameterized1_16      |    31|
+|18    |      readData2PipeReg    |PipelineReg__parameterized3_17      |    64|
+|19    |      regWritePipeReg     |PipelineReg__parameterized0_18      |     1|
+|20    |      writeAddrPipeReg    |PipelineReg__parameterized1_19      |     8|
+|21    |    forwardMux1           |ALUForwardMux                       |   198|
+|22    |    forwardMux2           |ALUForwardMux_1                     |    32|
+|23    |    idexPipeReg           |IDEXPipeReg                         |   662|
+|24    |      ALUCtrlPipeReg      |FlushablePipeReg                    |   133|
+|25    |      ALUSrcAPipeReg      |FlushablePipeReg__parameterized1    |    32|
+|26    |      ALUSrcBPipeReg      |FlushablePipeReg__parameterized1_3  |    34|
+|27    |      PCPipeReg           |FlushablePipeReg__parameterized4    |    31|
+|28    |      funct3PipeReg       |FlushablePipeReg__parameterized2    |     3|
+|29    |      immdiatePipeReg     |FlushablePipeReg__parameterized4_4  |   294|
+|30    |      memReadPipeReg      |FlushablePipeReg__parameterized1_5  |     1|
+|31    |      memWritePipeReg     |FlushablePipeReg__parameterized1_6  |     2|
+|32    |      memtoRegPipeReg     |FlushablePipeReg__parameterized3    |     2|
+|33    |      readAddr1PipeReg    |FlushablePipeReg__parameterized0    |     9|
+|34    |      readAddr2PipeReg    |FlushablePipeReg__parameterized0_7  |    43|
+|35    |      readData1PipeReg    |FlushablePipeReg__parameterized4_8  |    33|
+|36    |      readData2PipeReg    |FlushablePipeReg__parameterized4_9  |    32|
+|37    |      regWritePipeReg     |FlushablePipeReg__parameterized1_10 |     1|
+|38    |      writeAddrPipeReg    |FlushablePipeReg__parameterized0_11 |    12|
+|39    |    ifidPipeReg           |IFIDPipeReg                         |   467|
+|40    |      PCPipeReg           |FlushableEnPipeReg                  |    62|
+|41    |      instrPipeReg        |FlushableEnPipeReg_2                |   405|
+|42    |    immGen                |ImmGen                              |     1|
+|43    |    memtoRegMux           |MemtoRegMux                         |    32|
+|44    |    memwbReg              |MEMWBPipeReg                        |    40|
+|45    |      regWriteDataPipeReg |PipelineReg__parameterized3         |    32|
+|46    |      regWritePipeReg     |PipelineReg__parameterized0         |     2|
+|47    |      writeAddrPipeReg    |PipelineReg__parameterized1         |     6|
+|48    |    pcSrcController       |PCSrcController                     |    11|
+|49    |    programCounter        |PC                                  |    31|
+|50    |    regfile               |RegFile                             |    26|
+|51    |  dmem                    |DMem                                |   195|
++------+--------------------------+------------------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:39 ; elapsed = 00:00:40 . Memory (MB): peak = 1022.391 ; gain = 461.504
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 41 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:31 ; elapsed = 00:00:37 . Memory (MB): peak = 1022.391 ; gain = 354.859
+Synthesis Optimization Complete : Time (s): cpu = 00:00:39 ; elapsed = 00:00:40 . Memory (MB): peak = 1022.391 ; gain = 461.504
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.082 . Memory (MB): peak = 1022.391 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 385 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1022.391 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 279 instances were transformed.
+  LD => LDCE: 133 instances
+  RAM256X1S => RAM256X1S (MUXF7(x2), MUXF8, RAMS64E(x4)): 128 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 18 instances
+
+INFO: [Common 17-83] Releasing license: Synthesis
+109 Infos, 84 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:45 ; elapsed = 00:00:47 . Memory (MB): peak = 1022.391 ; gain = 724.008
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1022.391 ; gain = 0.000
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/synth_1/IP2SOC_Top.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file IP2SOC_Top_utilization_synth.rpt -pb IP2SOC_Top_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Fri Apr  1 09:30:22 2022...

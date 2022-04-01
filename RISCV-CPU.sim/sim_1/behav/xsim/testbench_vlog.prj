@@ -1,0 +1,26 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../RISCV-CPU.srcs/sources_1/ip/imem/sim/imem.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/CLK_DIV.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/MIO_BUS.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/MULTI_CH32.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/SEG7x16.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/alu.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/control.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/cpu.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/forwarding.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/fpga_top.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/hazard_detection.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/imm.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/memory.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/mux.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/pc.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/pipeline_reg.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/regfile.v" \
+"../../../../RISCV-CPU.srcs/sources_1/imports/testbench.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

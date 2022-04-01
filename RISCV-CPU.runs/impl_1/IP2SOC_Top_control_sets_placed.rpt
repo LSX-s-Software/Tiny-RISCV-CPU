@@ -1,0 +1,105 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Fri Apr  1 09:31:14 2022
+| Host         : 393A running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file IP2SOC_Top_control_sets_placed.rpt
+| Design       : IP2SOC_Top
+| Device       : xc7a100t
+---------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Total control sets                                       |    27 |
+|    Minimum number of control sets                        |    27 |
+|    Addition due to synthesis replication                 |     0 |
+|    Addition due to physical synthesis replication        |     0 |
+| Unused register locations in slices containing registers |    20 |
++----------------------------------------------------------+-------+
+* Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
+** Run report_qor_suggestions for automated merging and remapping suggestions
+
+
+2. Histogram
+------------
+
++--------------------+-------+
+|       Fanout       | Count |
++--------------------+-------+
+| Total control sets |    27 |
+| >= 0 to < 4        |     1 |
+| >= 4 to < 6        |     1 |
+| >= 6 to < 8        |     0 |
+| >= 8 to < 10       |     0 |
+| >= 10 to < 12      |     0 |
+| >= 12 to < 14      |     0 |
+| >= 14 to < 16      |     0 |
+| >= 16              |    25 |
++--------------------+-------+
+* Control sets can be remapped at either synth_design or opt_design
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |             133 |           76 |
+| No           | No                    | Yes                    |             386 |          158 |
+| No           | Yes                   | No                     |               0 |            0 |
+| Yes          | No                    | No                     |               0 |            0 |
+| Yes          | No                    | Yes                    |             125 |           35 |
+| Yes          | Yes                   | No                     |               0 |            0 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++----------------------------------------+-----------------------------------------------------+-------------------------------------------+------------------+----------------+
+|              Clock Signal              |                    Enable Signal                    |              Set/Reset Signal             | Slice Load Count | Bel Load Count |
++----------------------------------------+-----------------------------------------------------+-------------------------------------------+------------------+----------------+
+|  U_7SEG/seg7_clk                       |                                                     | cpuCore/idexPipeReg/immdiatePipeReg/AR[0] |                2 |              3 |
+|  cpuCore/ifidPipeReg/instrPipeReg/E[0] |                                                     |                                           |                2 |              5 |
+|  clk_IBUF_BUFG                         | cpuCore/exmemPipeReg/ALUResultPipeReg/E[0]          | cpuCore/idexPipeReg/immdiatePipeReg/AR[0] |               15 |             32 |
+|  memRead_MEM_BUFG                      |                                                     |                                           |               19 |             32 |
+|  n_0_660_BUFG                          |                                                     |                                           |               14 |             32 |
+|  n_2_667_BUFG                          |                                                     |                                           |               24 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[0]_0  |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[0]_2  |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_0 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_1 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_3 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[11]_3 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_5 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_2 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_9 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_7 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_6 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_8 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[10]_4 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[11]_2 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[11]_0 |                                           |                8 |             32 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/exmemPipeReg/ALUResultPipeReg/out_reg[11]_1 |                                           |                8 |             32 |
+|  n_1_653_BUFG                          |                                                     |                                           |               17 |             32 |
+|  clk_IBUF_BUFG                         |                                                     | cpuCore/idexPipeReg/immdiatePipeReg/AR[0] |               28 |             78 |
+|  led_o_OBUF_BUFG[14]                   | cpuCore/idexPipeReg/writeAddrPipeReg/E[0]           | cpuCore/idexPipeReg/immdiatePipeReg/AR[0] |               20 |             93 |
+|  U_CLKDIV/clkdiv_reg[0]_0_BUFG         | cpuCore/memwbReg/writeAddrPipeReg/p_0_in            |                                           |               18 |            144 |
+|  led_o_OBUF_BUFG[14]                   |                                                     | cpuCore/idexPipeReg/immdiatePipeReg/AR[0] |              128 |            305 |
++----------------------------------------+-----------------------------------------------------+-------------------------------------------+------------------+----------------+
+
+

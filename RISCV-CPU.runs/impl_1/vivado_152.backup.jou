@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Fri Apr  1 09:19:52 2022
+# Process ID: 152
+# Current directory: C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/impl_1
+# Command line: vivado.exe -log IP2SOC_Top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source IP2SOC_Top.tcl -notrace
+# Log file: C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/impl_1/IP2SOC_Top.vdi
+# Journal file: C:/Users/linsixing/Documents/Vivado/RISCV-CPU/RISCV-CPU.runs/impl_1\vivado.jou
+#-----------------------------------------------------------
+source IP2SOC_Top.tcl -notrace
