@@ -205,7 +205,7 @@ module CPUCore (
     );
     //-------------------------------------------------------------------------
     // EX
-    wire [`WORD_LEN-1:0] aluSrcAMuxOut, aluSrcBMuxOut;
+    wire [`WORD_LEN-1:0] aluSrcAMuxOut;
     wire [`WORD_LEN-1:0] aluInputA, readData2ForwardedData_EX, aluInputB; // read ALU input
     wire [1:0] forwardA, forwardB;
     wire forwardMEM;
